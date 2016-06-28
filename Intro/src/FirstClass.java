@@ -35,6 +35,7 @@ public class FirstClass {
 		//this is called a shallow copy!
 		//if we want a deep copy we need to do:
 		//int[] B = A.clone();
+        //[Tatiana: pretty sure this is a shallow copy, deep copy requries that you overload the clone() method. http://javaconceptoftheday.com/difference-between-shallow-copy-vs-deep-copy-in-java/]
 		
 		
 		//learning constructors
