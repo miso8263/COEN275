@@ -3,7 +3,13 @@ package tetris;
 import java.util.ArrayList;
 
 /**
- * Class for coordinating individual game components and running the main gameplay.
+ * Class for holding and managing individual game components
+ * 
+ * This class handles the main data & logic of the game, including
+ * collision detection, movement & rotation, deletion of rows, score calculation,
+ * tetromino creation and management
+ * 
+ * These all interact to form the "state" of the game
  * 
  */
 public class GameSystem {
@@ -11,7 +17,7 @@ public class GameSystem {
 	private ArrayList<Tetromino> nextShapeQueue;
 	private Tetromino activeTetromino;
 	
-	public boolean displayGrid[][];
+	public boolean blockGrid[][];
 	
 	/**
 	 * Default constructor for game system
@@ -20,11 +26,20 @@ public class GameSystem {
 	 * 
 	 */
 	public GameSystem(){
-		// Initialize display
+		// Set score to zero
+		
+		// Game board is 22 blocks high by 10 blocks wide
 		
 		// Initialize Tetrominos
 		
-		// Initialize Timer
+	}
+	
+	/**
+	 * Get grid for runner use in display
+	 * @return blockGrid
+	 */
+	public static boolean[][] getGrid(){
+		return null;
 	}
 	
 	//Tetromino Functionality
@@ -36,7 +51,7 @@ public class GameSystem {
 	 * @param rotation
 	 */
 	public static void moveActiveTetromino(int x_direction, int y_direction, int rotation){
-		
+		//TODO: possibly add a return value to indicate losing game
 	}
 	
 	/**
@@ -53,6 +68,14 @@ public class GameSystem {
 		//pop tetromino from queue
 		
 		//hold it in variable
+	}
+	
+	/**
+	 * Get active tetromino
+	 * @return active tetromino
+	 */
+	public static Tetromino getActiveTetromino(){
+		return null;
 	}
 	
 	/**
@@ -75,4 +98,5 @@ public class GameSystem {
 	static void completeRows(){
 		
 	}
+	
 }

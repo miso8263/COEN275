@@ -1,10 +1,20 @@
 package tetris;
 
 /**
- * Class for interacting with the user to execute gameplay instructions.
+ * Class for interacting with the user and executing gameplay instructions.
+ * 
+ * Sends commands to the GameSystem for management of gameplay,
+ * including sending signals received from user and "drop" timer
+ * 
+ * Retrieves details from GameSystem to transmit to the display
+ * Also sends flavor text depending on game state to GameDisplay
+ * 
+ * Runs major start, pause, and quit functionality
  * 
  */
 public class GameRunner {
+	private int level;
+	private boolean paused;
 	/**
 	 * Default constructor for the Runner class
 	 * 
@@ -20,8 +30,15 @@ public class GameRunner {
 	static void startGame(){
 		// Create game system object
 		
-		// Begin gameplay
-		System.out.println("Game not implemented yet.  Try again later.\n");
+		// Set level to zero
+		
+		//paused is false
+		
+		// Initialize display
+		
+		// Initialize Timer
+		
+		// Initialize Input Listener
 	}
 	
 	/**
@@ -30,20 +47,90 @@ public class GameRunner {
 	 * @param user input
 	 */
 	static void inputListener(){
-		// move
+		// Listener: Press A
+			// Behavior: Rotate counterclockwise
+		// Listener: Press D
+			// Behavior: Rotate clockwise
 		
-		// rotate
+		// Listener: Press Left arrow
+			// Behavior: Shift Tetromino left 
 		
-		// drop
+		// Listener: Press Right arrow
+			// Behavior: Shift Tetromino right
 		
-		// pause
+		// Listener: Press Down arrow
+			// Behavior: "Drop" Tetromino into place
 		
-		// quit
+		//Listner: Press Spacebar
+			// Behavior: Pause Game
 		
+		// Listener: Press Esc
+			// Behavior: Pause Game
+			// Print “Quit Game?”
+			// If they press Enter, Quit Game
+	
 	}
 	
+	static void levelUp(){
+		// Print level up message
+		// Speed of drop is increased
+		// Score threshold is updated
+
+	}
+	
+	/**
+	 * Stop taking input until game is unpaused
+	 */
+	static void pauseGame(){
+		//If game already paused,
+			//unpause
+			//Pause message is removed
+			//Game clock resumes, game loop resumes
+		//Else
+			//game clock stops, game loop suspends
+			//Active tetromino ceases all movement, including downward 
+			//Pause message is displayed
+
+	}
+	
+	/**
+	 * Lose game
+	 */
+	static void loseGame(){
+		// Loser message printed
+		// call endGame
+	}
+	
+	/**
+	 * End game
+	 */
+	static void endGame(){
+		//Game ends
+		//Final scores is printed
+		//Provide option to play again, if yes Case A executes
+	}
+	
+	/**
+	 * Main runner for the game
+	 * @param args
+	 */
 	public static void main(String[] args){
 		startGame();
+		
+		// Begin gameplay
+		System.out.println("Game not implemented yet.  Try again later.\n");
+				
+		// While game is not over
+		
+			// Release Tetromino
+			// If there is no room, lose game
+			// Update preview of next shape
+			// While tetromino has not landed
+				// Wait
+			// Land tetromino
+			// Complete rows
+			// If score is high enough to level up
+			// Level up
 	}
 
 }
