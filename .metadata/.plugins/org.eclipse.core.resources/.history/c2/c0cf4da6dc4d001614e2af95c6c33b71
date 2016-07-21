@@ -1,0 +1,46 @@
+package tetris;
+
+/**
+ * Template for tetromino characteristics and creation.
+ *
+ */
+public class Tetromino {
+	
+	boolean[][] shape; //this may be implemented in a different way
+						// but it must match the return type of getShape()
+	
+	int x_location;
+	int y_location;
+	
+	public Tetromino(String shape){
+		//if shape == 'l' shape ==  oooo
+		
+		//else if shape == 'o' shape == oo
+		//                              oo
+		
+		//etc
+	}
+	
+	public boolean[][] getShape(){
+		return this.shape;
+	}
+	
+	public int getXLocation(){
+		return -1;
+	}
+	
+	public int getYLocation(){
+		return -1;
+	}
+
+	public void setLocation(int x, int y){
+		
+	}
+	
+	public void rotate(int rotation){
+		// TODO: add collision detection and error handling
+	}
+}
+
+
+

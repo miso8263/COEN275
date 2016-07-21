@@ -1,0 +1,26 @@
+package pizza;
+
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class PizzaDecorator implements Pizza {
+	private static final JFrame JFrame = null;
+	protected Pizza decoratedPizza;
+	
+	public PizzaDecorator(Pizza decoratedPizza)
+	{
+		this.decoratedPizza = decoratedPizza;
+	}
+	
+	public int getCost()
+	{
+		return decoratedPizza.getCost();
+	}
+	
+	public void drawPizza()
+	{
+		decoratedPizza.drawPizza(JFrame myFrame);
+	}
+}

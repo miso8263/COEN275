@@ -1,0 +1,65 @@
+package tetris;
+
+/**
+ * Class for interacting with the user to execute gameplay instructions.
+ * 
+ */
+public class GameRunner {
+	private int level;
+	/**
+	 * Default constructor for the Runner class
+	 * 
+	 * @return instance of Runner class
+	 */
+	GameRunner(){
+		
+	}
+	
+	/**
+	 * Function to begin game 
+	 */
+	static void startGame(){
+		// Create game system object
+		
+		// Begin gameplay
+		System.out.println("Game not implemented yet.  Try again later.\n");
+		
+		// Initialize Timer
+		
+		// Initialize Input Listener
+	}
+	
+	/**
+	 * This will become the input listener, which passes user input to system
+	 * 
+	 * @param user input
+	 */
+	static void inputListener(){
+		// move
+		
+		// rotate
+		
+		// drop
+		
+		// pause
+		
+		// quit
+		
+	}
+	
+	public static void main(String[] args){
+		startGame();
+		
+		// While game is not over
+		
+			// Release Tetromino
+			// Update preview of next shape
+			// While tetromino has not landed
+				// Wait
+			// Land tetromino
+			// Complete rows
+			// If score is high enough to level up
+			// Level up
+	}
+
+}

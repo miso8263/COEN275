@@ -1,0 +1,26 @@
+package tetris;
+
+/**
+ * Class for managing game clock and related activities. 
+ *
+ */
+public class Timekeeper {
+	private int time;
+	private int speed;
+	private boolean isPaused;
+	
+	/**
+	 * @return speed
+	 */
+	public static int getSpeed(){
+		return -1;
+	}
+	
+	/**
+	 * set value of speed
+	 * @param newSpeed
+	 */
+	public static void setSpeed(int newSpeed){
+		
+	}
+}

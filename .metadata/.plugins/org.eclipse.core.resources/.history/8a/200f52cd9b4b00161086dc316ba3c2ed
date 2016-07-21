@@ -1,0 +1,10 @@
+package tetris;
+
+/**
+ * Class for displaying game elements to the screen.  
+ * @author msoult
+ *
+ */
+public class Display {
+
+}

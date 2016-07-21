@@ -1,0 +1,19 @@
+package pizza;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JPanel;
+
+public class CheesePizza implements Pizza {	
+	@Override
+	public int getCost(){
+		return 1;
+	}
+	
+	@Override
+	public JPanel draw(JPanel p) {    
+		Graphics g = new Graphics()
+        g.setColor(Color.YELLOW);
+        g.fillOval(50, 50, 50, 50);
+    }  
+}

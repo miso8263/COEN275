@@ -1,0 +1,12 @@
+package pizza;
+
+public class PizzaMaker {
+	
+	public static void main(String[] args){
+		
+		CheesePizza myPizza = new CheesePizza();
+		
+		
+		
+	}
+}

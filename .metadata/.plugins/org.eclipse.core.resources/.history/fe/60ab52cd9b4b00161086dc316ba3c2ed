@@ -1,0 +1,11 @@
+package tetris;
+
+/**
+ * Template for tetromino characteristics and creation.
+ * 
+ * @author msoult
+ *
+ */
+public class Tetromino {
+
+}

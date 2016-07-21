@@ -1,0 +1,14 @@
+package pizza;
+
+public class PizzaMaker {
+	
+	public static void main(String[] args){
+		
+		JFrame myFrame = new JFrame();
+		
+		CheesePizza myPizza = new CheesePizza();
+		
+		
+		
+	}
+}

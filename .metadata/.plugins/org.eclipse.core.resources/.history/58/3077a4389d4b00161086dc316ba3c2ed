@@ -1,0 +1,10 @@
+package tetris;
+
+/**
+ * Class for coordinating individual game components and running the main gameplay.
+ * 
+ */
+
+public class System {
+
+}

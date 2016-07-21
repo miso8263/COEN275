@@ -1,0 +1,51 @@
+package tetris;
+
+/**
+ * Class for interacting with the user to execute gameplay instructions.
+ * 
+ */
+public class Runner {
+	
+	/**
+	 * Default constructor for the Runner class
+	 * 
+	 * @params none
+	 * @return instance of Runner class
+	 */
+	Runner(){
+		
+	}
+	
+	/**
+	 * Function to begin game 
+	 */
+	static void startGame(){
+		// Create game system object
+		
+		// Begin gameplay
+	}
+	
+	/**
+	 * This will become the input listener, which passes user input to system
+	 * 
+	 * @params user input
+	 */
+	static void inputListener(){
+		
+	}
+	
+	/**
+	 * 
+	 */
+	static void pauseGame(){
+		
+	}
+	
+	static void quitGame(){
+		
+	}
+	
+	public static void main(String[] args){
+		startGame();
+	}
+}

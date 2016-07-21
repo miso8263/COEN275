@@ -1,0 +1,12 @@
+package pizza;
+
+public interface Pizza {
+	
+	
+	
+	public void draw()
+	{
+		
+	}
+
+}

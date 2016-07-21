@@ -1,0 +1,21 @@
+package tetris;
+
+/**
+ * Class for displaying game elements to the screen.  
+ *
+ */
+public class GameDisplay {
+	
+	/**
+	 * Default constructor
+	 * initialize default display
+	 */
+	public GameDisplay(){
+		
+	}
+	
+	public static updateDisplay(boolean[][] gridData){
+		
+	}
+
+}

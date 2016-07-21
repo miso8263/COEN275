@@ -1,0 +1,21 @@
+package pizza;
+
+public class Pepperoni extends PizzaDecorator {
+	
+	public Pepperoni(Pizza pizza)
+	{
+		super(pizza);
+	}
+	
+	@Override
+	public int getCost()
+	{
+		return pizza.getCost() + .5;
+	}
+	
+	public void draw()
+	{
+		decoratedPizza.draw();
+	}
+
+}

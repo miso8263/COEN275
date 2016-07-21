@@ -1,0 +1,18 @@
+package pizza;
+
+import javax.swing.JPanel;
+
+public class CheesePizza {
+	
+	public CheesePizza(){
+		
+	}
+	
+	public int getCost(){
+		return 1;
+	}
+	
+	public JPanel getPicture(){
+		
+	}
+}

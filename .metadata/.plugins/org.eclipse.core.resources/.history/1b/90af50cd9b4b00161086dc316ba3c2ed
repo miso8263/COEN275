@@ -1,0 +1,12 @@
+package tetris;
+
+/**
+ * Class for coordinating individual game components and running the main gameplay.
+ * 
+ * @author msoult
+ *
+ */
+
+public class System {
+
+}

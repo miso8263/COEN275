@@ -1,0 +1,19 @@
+package pizza;
+
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+
+public class PizzaMaker {
+	
+	public static void main(String[] args){
+		
+		JFrame myFrame = new JFrame();
+		
+		CheesePizza myPizza = new CheesePizza();		
+		
+		myPizza.draw();
+		
+		myFrame.add(panel);
+	}
+}

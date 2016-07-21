@@ -1,0 +1,27 @@
+package pizza;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class Olives extends PizzaDecorator{
+	JLabel label;
+	
+	public Olives(Pizza pizza)
+	{
+		super(pizza);
+	}
+	
+	@Override
+	public int getCost()
+	{
+		return super.getCost() + 1;
+	}
+	
+	@Override
+	public void draw()
+	{
+		g.setColor(Color.BLACK);
+        g.fillOval(5, 5, 5, 5);
+	}
+
+}

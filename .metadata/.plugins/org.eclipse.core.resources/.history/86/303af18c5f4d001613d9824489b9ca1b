@@ -1,0 +1,13 @@
+package pizza;
+
+import java.awt.Graphics;
+
+import javax.swing.JLabel;
+
+public interface Pizza{
+	
+	public int getCost();
+	
+	public JLabel draw();
+
+}

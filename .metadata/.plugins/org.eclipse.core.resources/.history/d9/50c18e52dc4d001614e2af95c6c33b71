@@ -1,0 +1,31 @@
+package tetris;
+
+/**
+ * Template for tetromino characteristics and creation.
+ *
+ */
+public class Tetromino {
+	
+	boolean[][] Shape; //this may be implemented in a different way
+						// but it must match the return type of getShape()
+	
+	public Tetromino(String shape){
+		//if shape == 'l' Shape ==  oooo
+		
+		//else if shape == 'o' Shape == oo
+		//                              oo
+		
+		//etc
+	}
+	
+	public boolean[][] getShape(){
+		return this.Shape;
+	}
+	
+	public int getXLocation(){
+		return -1;
+	}
+
+}
+
+

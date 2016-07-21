@@ -1,0 +1,34 @@
+package pizza;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class Pepperoni extends PizzaDecorator {
+	JLabel myLabel;
+	
+	public Pepperoni(Pizza pizza)
+	{
+		super(pizza);
+	}
+	
+	@Override
+	public int getCost()
+	{
+		return super.getCost() + 1;
+	}
+	
+	@Override
+	public JPanel draw()
+	{
+		myLabel = new JLabel();
+		ImageIcon myImage = new ImageIcon(PicURL));
+		myLabel.setIcon(myImage);
+		
+		return super.draw().add(myLabel);
+	}
+
+}

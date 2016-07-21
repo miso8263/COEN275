@@ -1,0 +1,11 @@
+package tetris;
+
+/**
+ * Class for managing game clock and related activities. 
+ * 
+ * @author msoult
+ *
+ */
+public class Timekeeper {
+
+}

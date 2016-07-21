@@ -1,0 +1,32 @@
+package pizza;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class CheesePizza implements Pizza {	
+	JLabel myLabel;
+	
+	@Override
+	public int getCost(){
+		return 1;
+	}
+	
+	@Override
+	public void drawPizza()
+	{
+		JFrame myFrame = new JFrame();
+		
+		myLabel = new JLabel();
+		ImageIcon myImage = new ImageIcon("http://lanakrcole.com/pizza_houze/images/crust.png");
+		myLabel.setIcon(myImage);
+
+		myFrame.add(myLabel, BorderLayout.SOUTH);
+		return myFrame;
+	}
+}

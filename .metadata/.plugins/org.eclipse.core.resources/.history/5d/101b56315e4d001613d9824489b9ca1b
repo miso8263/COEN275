@@ -1,0 +1,26 @@
+package pizza;
+
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+
+public class PizzaMaker {
+	
+	public static int printCost(Pizza p)
+	{
+		System.out.println("My pizza costs "+p.getCost());
+	}
+	
+	public static void main(String[] args){
+		
+		JFrame myFrame = new JFrame();
+		
+		Pizza myPizza = new CheesePizza();		
+		
+		myPizza = new Pepperoni(myPizza);
+		
+		printCost(myPizza);
+		
+
+	}
+}
