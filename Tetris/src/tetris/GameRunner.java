@@ -129,6 +129,7 @@ public class GameRunner {
 				// Wait
 			// Land tetromino
 			// Complete rows
+			// Update score
 			// If score is high enough to level up
 			// Level up
 	}

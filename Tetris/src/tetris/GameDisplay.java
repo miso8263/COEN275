@@ -25,16 +25,19 @@ public class GameDisplay {
 	/**
 	 * Update display
 	 * @param gridData
+	 * gridData is a boolean grid with the same dimensions as the display
+	 * 0 means no block present
+	 * 1 means block present
 	 */
 	public static void updateGridDisplay(boolean[][] gridData){
 		
 	}
 	
 	/**
-	 * Update flavor text (pause, quit, etc)
+	 * Update game message (pause, quit, etc)
 	 * @param text
 	 */
-	public static void updateFlavorText(String text){
+	public static void updateGameMessage(String text){
 		
 	}
 	
@@ -43,6 +46,14 @@ public class GameDisplay {
 	 * @param next tetromino
 	 */
 	public static void updatePreview(Tetromino tetromino){
+		
+	}
+	
+	/**
+	 * Display score
+	 * @param score
+	 */
+	public static void updateScoreDisplay(int score){
 		
 	}
 

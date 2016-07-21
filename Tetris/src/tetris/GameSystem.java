@@ -6,7 +6,8 @@ import java.util.ArrayList;
  * Class for holding and managing individual game components
  * 
  * This class handles the main data & logic of the game, including
- * collision detection, movement & rotation, deletion of rows, score calculation,
+ * collision detection, sending movement & rotation instructions, 
+ * deletion of rows, score calculation,
  * tetromino creation and management
  * 
  * These all interact to form the "state" of the game
@@ -42,13 +43,34 @@ public class GameSystem {
 		return null;
 	}
 	
+	/**
+	 * Get score for runner use in display
+	 * @return score
+	 */
+	public static int getScore(){
+		return -1;
+	}
+	
 	//Tetromino Functionality
+	/**
+	 * Creates a random-shaped tetromino (of the shape options)
+	 * Returns that tetromino
+	 */
+	static Tetromino createRandomTetromino(){
+		return new Tetromino();
+	}
+	
 	/**
 	 * Finds active tetromino and moves it
 	 * 
 	 * @param x_direction
 	 * @param y_direction
 	 * @param rotation
+	 * 
+	 * x = -1 means move left, x = 1 means move right
+	 * y = -1 means move up, y = 1 means move down
+	 * rotation = ?? means rotate ?? 90 degrees
+	 * 
 	 */
 	public static void moveActiveTetromino(int x_direction, int y_direction, int rotation){
 		//TODO: possibly add a return value to indicate losing game
@@ -87,6 +109,7 @@ public class GameSystem {
 	
 	/** 
 	 * land and lock shape to game grid
+	 * increase score
 	 */
 	static void landShape(){
 		
@@ -94,6 +117,7 @@ public class GameSystem {
 	
 	/**
 	 * Check for completed rows and delete those that have been completed
+	 * increase score
 	 */
 	static void completeRows(){
 		

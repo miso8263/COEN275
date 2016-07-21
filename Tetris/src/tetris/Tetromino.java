@@ -9,11 +9,19 @@ package tetris;
  */
 public class Tetromino {
 	
-	private boolean[][] shape; //this may be implemented in a different way
+	private boolean[][] tetrominoGrid; //this may be implemented in a different way
 						// but it must match the return type of getShape()
 	
 	private int x_location;
 	private int y_location;
+	
+	/**
+	 * Default constructor for tetromino
+	 * Creates a square tetromino ('o')
+	 */
+	public Tetromino(){
+		
+	}
 	
 	/**
 	 * Constructor for tetromino
@@ -35,8 +43,8 @@ public class Tetromino {
 	 * Used by system and display
 	 * @return shape
 	 */
-	public boolean[][] getShape(){
-		return this.shape;
+	public boolean[][] getShapeGrid(){
+		return this.tetrominoGrid;
 	}
 	
 	/**
