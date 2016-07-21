@@ -9,7 +9,7 @@ package tetris;
  * Retrieves details from GameSystem to transmit to the display
  * Also sends flavor text depending on game state to GameDisplay
  * 
- * Runs major start, pause, and quit functionality!
+ * Runs major start, pause, and quit functionality
  * 
  */
 public class GameRunner {
