@@ -1,9 +1,0 @@
-package pizza;
-
-public interface Pizza extends JPanel{
-	
-	public int getCost();
-	
-	public void draw();
-
-}

@@ -1,9 +1,0 @@
-package pizza;
-
-public interface Pizza{
-	
-	public int getCost();
-	
-	public void draw();
-
-}
