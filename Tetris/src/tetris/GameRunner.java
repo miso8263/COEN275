@@ -1,5 +1,7 @@
 package tetris;
 
+import java.awt.event.KeyListener;
+
 /**
  * Class for interacting with the user and executing gameplay instructions.
  * 
@@ -12,9 +14,9 @@ package tetris;
  * Runs major start, pause, and quit functionality
  * 
  */
-public class GameRunner {
-	private int level;
-	private boolean paused;
+public class GameRunner{
+	private static int level;
+	private static boolean paused;
 	/**
 	 * Default constructor for the Runner class
 	 * 
@@ -29,14 +31,19 @@ public class GameRunner {
 	 */
 	static void startGame(){
 		// Create game system object
+		GameSystem tetrisSystem = new GameSystem();
 		
 		// Set level to zero
+		level = 0;
 		
 		//paused is false
+		paused = false;
 		
 		// Initialize display
+		GameDisplay tetrisDisplay = new GameDisplay();
 		
 		// Initialize Timer
+		Timekeeper tetrisTimer = new Timekeeper();
 		
 		// Initialize Input Listener
 	}
@@ -66,7 +73,7 @@ public class GameRunner {
 		
 		// Listener: Press Esc
 			// Behavior: Pause Game
-			// Print “Quit Game?”
+			// Print "Quit Game"
 			// If they press Enter, Quit Game
 	
 	}

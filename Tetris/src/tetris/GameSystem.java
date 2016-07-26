@@ -1,6 +1,7 @@
 package tetris;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Class for holding and managing individual game components
@@ -18,8 +19,10 @@ public class GameSystem {
 	private ArrayList<Tetromino> nextShapeQueue;
 	private Tetromino activeTetromino;
 	
-	public boolean blockGrid[][];
+	private boolean blockGrid[][];
 	
+	private static char[] shapeChoices = {'i', 'o', 's', 'z', 'j', 'l'};
+	private static Random rand = new Random();
 	/**
 	 * Default constructor for game system
 	 * 
@@ -28,27 +31,34 @@ public class GameSystem {
 	 */
 	public GameSystem(){
 		// Set score to zero
+		this.score = 0;
 		
 		// Game board is 22 blocks high by 10 blocks wide
+		this.blockGrid = new boolean[22][10];
 		
 		// Initialize Tetrominos
-		
+		this.nextShapeQueue = new ArrayList<Tetromino>();
+		for(int i = 0; i < 3; i++){
+			nextShapeQueue.add(new Tetromino(shapeChoices[rand.nextInt(5)]));
+		}
 	}
+		
+	
 	
 	/**
 	 * Get grid for runner use in display
 	 * @return blockGrid
 	 */
-	public static boolean[][] getGrid(){
-		return null;
+	public boolean[][] getGrid(){
+		return this.blockGrid;
 	}
 	
 	/**
 	 * Get score for runner use in display
 	 * @return score
 	 */
-	public static int getScore(){
-		return -1;
+	public int getScore(){
+		return this.score;
 	}
 	
 	//Tetromino Functionality
