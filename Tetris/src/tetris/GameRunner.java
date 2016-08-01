@@ -65,8 +65,8 @@ public class GameRunner{
 		// Listener: Press Right arrow
 			// Behavior: Shift Tetromino right
 		
-		// Listener: Press Down arrow
-			// Behavior: "Drop" Tetromino into place
+		// Listener: Press Up arrow
+			// Behavior: "Lift" Tetromino into place
 		
 		//Listner: Press Spacebar
 			// Behavior: Pause Game
