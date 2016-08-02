@@ -60,7 +60,7 @@ public class TetrominoTester {
 					System.out.print("T");
 				}
 				else
-					System.out.print("F");
+					System.out.print(" ");
 			}
 			System.out.println("");
 		}
