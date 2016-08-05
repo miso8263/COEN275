@@ -24,6 +24,7 @@ public class GameSystem {
 	private static char[] shapeChoices = {'i', 'o', 's', 't', 'z', 'j', 'l'};
 	private static int HEIGHT = 22;
 	private static int WIDTH = 10;
+	private static int SHAPE_LAND_SCORE = 50;
 	
 	/**
 	 * Default constructor for game system
@@ -93,15 +94,23 @@ public class GameSystem {
 		int i;
 		int j;
 		
-		// Rotation handling
+		if (this.activeTetromino == null || this.activeTetromino.getXLocation() == -111)
+		{
+			// Unreleased tetromino
+			return;
+		}
+		
 		if (rotation != 0)
 		{
+			// Handle rotation
 			this.activeTetromino.rotate(rotation);
+			
+			
 			tempGrid = this.activeTetromino.getShapeGrid();
 			x_loc = this.activeTetromino.getXLocation();
 			y_loc = this.activeTetromino.getYLocation();
 			
-			// Check for collision and revert if collision occurred
+			// Check for collision
 			for (i = 0; i < tempGrid.length; i++) //rows
 			{
 				for (j = 0; j < tempGrid[0].length; j++) //columns
@@ -109,6 +118,7 @@ public class GameSystem {
 					// Out of bounds to the left
 					if (tempGrid[i][j] && (j+x_loc < 0))
 					{
+						// Undo rotation
 						this.activeTetromino.rotate(rotation*-1);;
 						return;
 					}
@@ -116,6 +126,7 @@ public class GameSystem {
 					// Out of bounds to the right
 					if (tempGrid[i][j] && (j+x_loc > WIDTH))
 					{
+						// Undo rotation
 						this.activeTetromino.rotate(rotation*-1);;
 						return;
 					}
@@ -129,102 +140,82 @@ public class GameSystem {
 					}
 				}
 			}
-			
+				
 			// No collisions detected; retain rotation
-			return;
 		}
-		
-		// Normal movement handling
-		tempGrid = this.activeTetromino.getShapeGrid();
-		x_loc = this.activeTetromino.getXLocation();
-		y_loc = this.activeTetromino.getYLocation();
-		
-		// If moving up, check that we do not collide upwards
-		if (y_direction == -1)
+		else 
 		{
-			// TODO: what if grid goes farther up than 0
+			// Normal movement handling
+			tempGrid = this.activeTetromino.getShapeGrid();
+			x_loc = this.activeTetromino.getXLocation();
+			y_loc = this.activeTetromino.getYLocation();
 			
-			i = 0; // check along the topmost row
-			for (j = 0; j < tempGrid[0].length; j++)
+			for (i = 0; i < tempGrid.length; i++) //rows
 			{
-				if (i + y_loc == 0) // tetromino grid aligns with the top
+				for (j = 0; j < tempGrid[0].length; j++) //columns
 				{
-					if	(tempGrid[i][j]) // we have a block which has reached the top
+					// Only check for collision if there is a block present
+					if (tempGrid[i][j])
 					{
-						// TODO: land shape, complete rows, remove active tetromino
-						return;
-					}
-				}
-				else if (i + y_loc > 0) // can only collide if there is something at the top to collide with
-				{
-					// IF there are two blocks vertically on top of one another
-					if (tempGrid[i][j] && this.blockGrid[i + y_loc - 1][j + x_loc]) 
-					{
-						// Collision imminent
-						// TODO: land shape, complete rows, remove active tetromino
-						return;
-					}
-				}
-			}	
-			
-			// Cleared upward collision check
-		}
-		else if (x_direction == -1) // If moving left
-		{
-			// TODO: what if grid overlaps to -1
-			
-			// check that we do not collide leftward
-			j = 0; // check along the leftmost column
-			for (i = 0; i < tempGrid.length; i++)
-			{
-				if (j + x_loc == 0) // grid aligns with the left
-				{
-					if (tempGrid[i][j]) // we have a block which is on the left wall
-					{
-						// Do not move
-						return; 
-					}
-				}
-				else if (j + x_loc > 0)
-				{
-					if (tempGrid[i][j] && this.blockGrid[i + y_loc][j + x_loc - 1])
-					{
-						// Collision imminent; do not move
-						return;
+						// Check for upward collision
+						if (y_direction == -1)
+						{
+							if ((i+y_loc) <= 0)
+							{
+								// Top of board, stop
+								landShape();
+								return;
+							}
+							
+							if (this.blockGrid[i+y_loc - 1][j+x_loc])
+							{
+								// Block immediately above, stop
+								landShape();
+								return;
+							}
+						}
+						
+						// Check for rightward collision
+						
+						else if (x_direction == 1)
+						{
+							if ((j+x_loc >= WIDTH))
+							{
+								// Up against the wall; don't move
+								return;
+							}
+							
+							if (this.blockGrid[i+y_loc][j+x_loc+1])
+							{
+								// Block immediately to the right; don't move
+								return;
+							}
+						}
+						
+						// Check for leftward collision
+						else if (x_direction == -1)
+						{
+							if((j+x_loc <= 0))
+							{
+								// Up against the wall; don't move
+								return;
+							}
+							
+							if (this.blockGrid[i+y_loc][j+x_loc-1])
+							{
+								// Block immediately to the left; don't move
+								return;
+							}
+						}
 					}
 				}
 			}
-		}
-		else if (x_direction == 1) // If moving right
-		{
-			// TODO: what if grid overlaps to more than width
 			
-			// check that we do not collide rightward
-			j = tempGrid[0].length - 1; // check along the rightmost column
-			for (i = 0; i < tempGrid.length; i++)
-			{
-				if ((j + x_loc) == (WIDTH - 1)) // grid aligns with the right
-				{
-					if (tempGrid[i][j]) // we have a grid on the right wall
-					{
-						// Do not move
-						return;
-					}
-				}
-				else if ((j + x_loc) < (WIDTH - 1))
-				{
-					if (tempGrid[i][j] && this.blockGrid[i + y_loc][j + x_loc + 1])
-					{
-						// Collision imminent; do not move
-						return;
-					}
-				}
-			}
+			// No collisions detected, move tetromino
+			this.activeTetromino.setLocation(x_loc+x_direction, y_loc+y_direction);
 		}
-	
-		// No collisions detected, move tetromino
-		this.activeTetromino.setLocation(x_loc+x_direction, y_loc+y_direction);
 		
+		// TODO: update display
 		
 	}
 	
@@ -258,7 +249,7 @@ public class GameSystem {
 	private void releaseTetromino(){
 		// Begin moving active tetromino through board
 		
-		// If tetromino cannot move down, game over
+		// If tetromino cannot move up, game over
 	}
 	
 	/** 
@@ -268,18 +259,41 @@ public class GameSystem {
 	private void landShape(){
 		
 		// Get location of active tetromino
+		boolean[][] tempGrid = this.activeTetromino.getShapeGrid().clone();
+		int x_loc = this.activeTetromino.getXLocation();
+		int y_loc = this.activeTetromino.getYLocation();
+		
+		removeActiveTetromino();
 		
 		// Get positions of each of its blocks
-		
 		// Incorporate these into the current grid
+		for (int i = 0; i < tempGrid.length; i++) //rows
+		{
+			for (int j = 0; j < tempGrid[0].length; j++) //columns
+			{
+				if (tempGrid[i][j])
+				{
+					this.blockGrid[i + y_loc][j + x_loc] = true;
+				}
+			}
+		}
+		
+		this.score += SHAPE_LAND_SCORE;
+		
+		completeRows();
+		
+		setActiveTetromino();		
+		releaseTetromino();
 	}
 	
 	/**
 	 * Check for completed rows and delete those that have been completed
 	 * increase score
 	 */
-	static void completeRows(){
+	private void completeRows()
+	{
 		
+		// TODO: update display
 	}
 	
 }
