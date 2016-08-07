@@ -247,9 +247,27 @@ public class GameSystem {
 	 * Release tetromino so it can begin moving
 	 */
 	private void releaseTetromino(){
-		// Begin moving active tetromino through board
+		// Generate initial tetromino position		
+		boolean[][] tempGrid = this.activeTetromino.getShapeGrid();
+		int x_pos = 0; //leftmost x position to "center" tetromino in grid
+		// 0 1 2 3 4 5 6 7 8 9
+		if (tempGrid[0].length == 2)
+		{
+			x_pos = 4;
+		}
+		else
+		{
+			x_pos = 3;
+		}
 		
 		// If tetromino cannot move up, game over
+		if (this.blockGrid[HEIGHT-1][x_pos] || this.blockGrid[HEIGHT-2][x_pos])
+		{
+			// TODO: game over
+			return;
+		}
+		
+		this.activeTetromino.setLocation(x_pos, HEIGHT-2);
 	}
 	
 	/** 
@@ -292,7 +310,34 @@ public class GameSystem {
 	 */
 	private void completeRows()
 	{
-		
+		boolean rowComplete;
+		for (int i = 0; i < HEIGHT; i++) //rows
+		{
+			rowComplete = true;
+			for (int j = 0; j < WIDTH; j++) //columns
+			{
+				if (this.blockGrid[i][j])
+				{
+					rowComplete = false;
+				}
+			}
+			if (rowComplete)
+			{
+				// Remove all blocks in row
+				for (int k = 0; k < WIDTH; k++)
+				{
+					this.blockGrid[i][k] = false;
+				}
+				// Shift all other blocks up
+				for (int m = i; m < HEIGHT-1; m++) //avoid running over edge
+				{
+					for (int n = 0; n < WIDTH; n++)
+					{
+						this.blockGrid[m][n] = this.blockGrid[m+1][n];
+					}
+				}
+			}
+		}
 		// TODO: update display
 	}
 	
