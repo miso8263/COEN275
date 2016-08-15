@@ -2,12 +2,20 @@ package tetris;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +24,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
+import com.sun.medialib.mlib.Image;
+
 /**
  * Class for displaying game elements to the screen.  
  * 
@@ -23,12 +33,24 @@ import javax.swing.border.LineBorder;
  * 
  * This is going to have some fields but we haven't worked that out yet
  */
-public class GameDisplay {
+public class GameDisplay extends JComponent{
 	//TODO: add fields, such as String flavorText, actual display, etc.
 	
 	JFrame frame;
 	JTextField textField_1;
 	JTextField textField;
+	
+	private java.awt.Image image;
+	
+	public void ImagePanel(java.awt.Image image){
+		this.image = image;
+	}
+	
+	@Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, this);
+    }
 	
 	/**
 	 * Default constructor
@@ -43,6 +65,8 @@ public class GameDisplay {
 		
 	}
 	
+	
+	
 	/**
 	 * Update display
 	 * @param gridData
@@ -51,7 +75,28 @@ public class GameDisplay {
 	 * 1 means block present
 	 */
 	public static void updateGridDisplay(boolean[][] gridData){
+		BufferedImage mino = null;
+		try {
+		    mino = ImageIO.read(new File("Mino.png"));
+		} catch (IOException e) {
+		}
+	
+		for (int i = 0; i < gridData.length - 2; i++) {
 		
+	    {
+	    	for (int j = 0; j < gridData[0].length; j++)
+	            {
+	                if (gridData[i][j])
+	                {
+	                    
+	                }
+	                else
+	                {
+	                    
+	                }
+	            }
+	        }
+		}
 	}
 	
 	/**
@@ -81,6 +126,15 @@ public class GameDisplay {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 490);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		try{
+			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("StarWarsSpace.png")))));
+		} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+		frame.pack();
+    	frame.setVisible(true);
+		
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
@@ -134,20 +188,20 @@ public class GameDisplay {
 		);
 		
 		JButton btnNewButton_1 = new JButton("Pause Game");
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton_1.setFont(new Font("Courier New", Font.BOLD, 12));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
 		JButton btnNewButton = new JButton("Quit Game");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton.setFont(new Font("Courier New", Font.BOLD, 12));
 		
 		JLabel lblNewLabel = new JLabel("Score");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel.setFont(new Font("Courier New", Font.BOLD, 14));
 		
 		JLabel lblLevel = new JLabel("Level");
-		lblLevel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblLevel.setFont(new Font("Courier New", Font.BOLD, 14));
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
