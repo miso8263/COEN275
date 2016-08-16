@@ -4,7 +4,7 @@ public class TetrominoTester {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-			Tetromino myTetromino = new Tetromino('i');
+			Tetromino myTetromino = new Tetromino('l');
 			
 			boolean [][] mytesterGrid = myTetromino.getShapeGrid();
 			
@@ -60,7 +60,7 @@ public class TetrominoTester {
 					System.out.print("T");
 				}
 				else
-					System.out.print("F");
+					System.out.print(" ");
 			}
 			System.out.println("");
 		}

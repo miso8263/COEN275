@@ -154,13 +154,13 @@ public class Tetromino {
 		switch (rotation) {
 			case 1: 
 				//rotate right
-				swapRows(this.tetrominoGrid);
-				transpose(this.tetrominoGrid);
+				swapRows();
+				transpose();
 				break;
 			case -1:
 				//rotate left
-				transpose(this.tetrominoGrid);
-				swapRows(this.tetrominoGrid);
+				transpose();
+				swapRows();
 				break;
 			default:
 				//no rotation
@@ -169,29 +169,28 @@ public class Tetromino {
 		}
 	}
 	//should be private static void
-	private static void swapRows(boolean[][] tetrominoGrid){
-		for (int i = 0, j = tetrominoGrid[i].length-1; i<j; i++, j--){
-			boolean [] holder =  tetrominoGrid[i];
-			tetrominoGrid[i] = tetrominoGrid[j];
-			tetrominoGrid[j] = holder;
+	private void swapRows(){
+		for (int i = 0, j = this.tetrominoGrid[i].length-1; i<j; i++, j--){
+			boolean [] holder =  this.tetrominoGrid[i];
+			this.tetrominoGrid[i] = this.tetrominoGrid[j];
+			this.tetrominoGrid[j] = holder;
 		}
 	}
 	//should be private static void
-	private static void transpose(boolean[][] tetrominoGrid){ 
+	private void transpose(){ 
 		
-		boolean [][] holder = new boolean [tetrominoGrid.length][];
-		for( int i = 0; i < tetrominoGrid.length; i++){
-			holder [i] = tetrominoGrid[i].clone();
+		boolean [][] holder = new boolean [this.tetrominoGrid.length][];
+		for( int i = 0; i < this.tetrominoGrid.length; i++){
+			holder [i] = this.tetrominoGrid[i].clone();
 		}
 		
-		for(int i = 0; i < tetrominoGrid.length; i++ ) {
-			for( int j = 0; j < tetrominoGrid.length; j++ ) {
-				tetrominoGrid[i][j] = holder[j][i];
+		for(int i = 0; i < this.tetrominoGrid.length; i++ ) {
+			for( int j = 0; j < this.tetrominoGrid.length; j++ ) {
+				this.tetrominoGrid[i][j] = holder[j][i];
 			}
 		}
 			
 	}
-
 }
 
 
