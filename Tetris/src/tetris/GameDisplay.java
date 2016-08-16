@@ -12,12 +12,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+/*import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JPanel;*/
+import javax.swing.*;
 
 /**
  * Class for displaying game elements to the screen.  
@@ -40,8 +41,6 @@ public class GameDisplay extends JComponent{
 	
 	JLabel scoreDisplay;
 	JLabel levelDisplay;
-	
-	
 	
 	private java.awt.Image image;
 	
