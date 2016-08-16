@@ -24,7 +24,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
-import com.sun.medialib.mlib.Image;
+//import com.sun.medialib.mlib.Image;
 
 /**
  * Class for displaying game elements to the screen.  
@@ -147,6 +147,8 @@ public class GameDisplay extends JComponent{
 		
 		Box horizontalBox = Box.createHorizontalBox();
 		
+		
+	//panel with the labels creating components
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
@@ -187,6 +189,7 @@ public class GameDisplay extends JComponent{
 					.addContainerGap())
 		);
 		
+		//button for pause game
 		JButton btnNewButton_1 = new JButton("Pause Game");
 		btnNewButton_1.setFont(new Font("Courier New", Font.BOLD, 12));
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -194,20 +197,28 @@ public class GameDisplay extends JComponent{
 			}
 		});
 		
+		//button for quit game
 		JButton btnNewButton = new JButton("Quit Game");
 		btnNewButton.setFont(new Font("Courier New", Font.BOLD, 12));
 		
+		//button for score
 		JLabel lblNewLabel = new JLabel("Score");
 		lblNewLabel.setFont(new Font("Courier New", Font.BOLD, 14));
 		
+		
+		//label for level
 		JLabel lblLevel = new JLabel("Level");
 		lblLevel.setFont(new Font("Courier New", Font.BOLD, 14));
 		
+		//text fields for sacore and levels
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
 		
 		textField = new JTextField();
 		textField.setColumns(10);
+		
+		
+		//adding components to the Panel with the buttons
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
