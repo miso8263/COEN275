@@ -8,12 +8,47 @@ public class DisplayTester {
 		// TODO Auto-generated method stub
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				
+				boolean[][] testgridData = {{false, false, true, false, false, false, false, false, false, false},
+											{false, false, true, false, false, false, false, false, false, false},
+											{false, false, true, false, false, false, false, false, false, false},
+											{false, false, true, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, true, true, false, false, false, false, false},
+											{false, false, false, false, true, true, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, false, false, false, false},
+											{false, false, false, false, false, false, true, true, false, false},
+											{false, false, false, false, false, false, false, true, false, false},
+											{false, false, false, false, false, false, false, true, false, false}};
+				
+				boolean[][] testpreviewData = {{false, false, false, false, false, false, false, false},
+											   {false, false, false, false, false, false, false, false},
+											   {false, false, false, false, false, false, false, false},
+											   {false, false, false, true, true, false, false, false},
+											   {false, false, true, true, false, false, false, false},
+											   {false, false, false, false, false, false, false, false},
+											   {false, false, false, false, false, false, false, false},
+											   {false, false, false, false, false, false, false, false}};
+				
+				GameDisplay window = new GameDisplay();
 				try {
-					GameDisplay window = new GameDisplay();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				window.updateGridDisplay(testgridData);
+				window.updatePreview(testpreviewData);
 			}
 		});
 	}
