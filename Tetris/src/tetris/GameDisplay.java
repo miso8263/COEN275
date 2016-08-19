@@ -1,7 +1,9 @@
 package tetris;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -12,13 +14,14 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+
 /*import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;*/
-import javax.swing.*;
 
 /**
  * Class for displaying game elements to the screen.  
@@ -35,9 +38,14 @@ public class GameDisplay extends JComponent{
 	static JPanel tetrisPanel;
 	static JPanel controlPanel;
 	static JPanel sassyvaderPanel;
+	static JPanel screensContainer;
+	static CardLayout screens;
+	static JLabel sassyvader;
 	static JPanel previewPanel;
 	static JLabel[][] playgrid;
 	static JLabel[][] previewgrid;
+	
+	static ImageIcon vadericon;
 	
 	JLabel scoreDisplay;
 	JLabel levelDisplay;
@@ -57,7 +65,9 @@ public class GameDisplay extends JComponent{
 		// Game board is 22 blocks high by 10 blocks wide
 		// Game board has a border
 		initialize();
-		
+		displayScreen("gameplayScreen");
+		//screens.
+		System.out.println("constructor complete");
 	}
 	
 	
@@ -97,6 +107,43 @@ public class GameDisplay extends JComponent{
 	}
 	
 	/**
+	 * Update sassy vader image (pause, quit, etc)
+	 * @param int 1 = pause, 2 = endgame (quit or death), 3 = four
+	 */
+	public static void updateSassyVader(String event){
+		
+		Image vaderimage;
+	
+		if (event == "Pause"){
+				vaderimage = new ImageIcon("VaderPause.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+				vadericon.setImage(vaderimage);
+				sassyvader.revalidate();
+				sassyvader.repaint();
+				sassyvader.update(sassyvader.getGraphics());
+		}
+		else if (event == "Game Over"){
+				vaderimage = new ImageIcon("VaderDeath.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+				vadericon.setImage(vaderimage);
+				sassyvader.revalidate();
+				sassyvader.repaint();
+				sassyvader.update(sassyvader.getGraphics());	
+		}
+		else if (event == "Four"){
+				vaderimage = new ImageIcon("VaderFour.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+				vadericon.setImage(vaderimage);
+				sassyvader.revalidate();
+				sassyvader.repaint();
+				sassyvader.update(sassyvader.getGraphics());	
+		}
+		else {
+			vaderimage = new ImageIcon("DeathStarBlueprintWide.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+		}
+		
+
+
+	}
+	
+	/**
 	 * Update preview of next shape to come
 	 * @param next tetromino  -> I propose we change this to a boolean[][] previewData
 	 * to be consistent with the handling of the tetromino game board. 
@@ -124,7 +171,8 @@ public class GameDisplay extends JComponent{
 	 * Display score
 	 * @param score
 	 */
-	public static void updateScoreDisplay(int score){
+	public void updateScoreDisplay(int score){
+	//	this.scoreDisplay.setName(score);
 		
 	}
 	
@@ -137,6 +185,7 @@ public class GameDisplay extends JComponent{
 		frame = new JFrame("STAR TETRIS");
 		JLabel background = null;
 		try{
+			/* Loads the space background image */
 			background = new JLabel(new ImageIcon(ImageIO.read(new File("StarWarsSpace.png"))));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -145,32 +194,36 @@ public class GameDisplay extends JComponent{
 		/* Sets the space background */
 		frame.setContentPane(background);
 		
-		/*Places the window in the center of the screen(ish) */
-		frame.setBounds(400, 200, 1, 1);
-	
+		/* Sets coordinates of upper left corner of window. */
+		frame.setBounds(0, 0, 1, 1);
+		Dimension d = new Dimension(1000, 600);
+		frame.setMinimumSize(d);
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
 		
-		/* Creates a layout to hold all the panels, and three major panels to hold
-		 * the various sub-panels that will be laid out. */
+		/* Creates all the containers for objects on the screen */
 		BorderLayout tetrisLayout = new BorderLayout();
-		JPanel leftPanel = new JPanel(new GridLayout(3,1,0,10));
+		JPanel gameplayScreen = new JPanel();
+		JPanel welcomeScreen = new JPanel();	
+		JPanel pauseScreen = new JPanel();
+		JPanel gameoverScreen = new JPanel();
+		JPanel leftPanel = new JPanel(new GridLayout(3,1,0,20));
 		JPanel rightPanel = new JPanel();
 		JPanel bottomPanel = new JPanel();
-		leftPanel.setOpaque(false);				/* .setOpaque(true), then will be transparent */
+		leftPanel.setOpaque(false);				/* .setOpaque(true), then will not be transparent */
 		rightPanel.setOpaque(false);
 		bottomPanel.setOpaque(false);
+		gameplayScreen.setOpaque(false);
+		welcomeScreen.setOpaque(false);
+		pauseScreen.setOpaque(false);
 
-		/* Combines all the panels. */
-	    frame.setLayout(tetrisLayout);  
-		frame.add(leftPanel, BorderLayout.WEST);
-		frame.add(rightPanel, BorderLayout.CENTER);
-		frame.add(bottomPanel, BorderLayout.SOUTH);
-       
 		
-		/* generates the tetris panel */
-		tetrisPanel = new JPanel(new GridLayout(20,10,1,1));
+		/** 
+		 * Generates tetris panel aka game board
+		 */
+		tetrisPanel = new JPanel(new GridLayout(28,14,1,1));
 		tetrisPanel.setBackground(Color.BLACK);
-		playgrid = new JLabel[20][10];
+		playgrid = new JLabel[28][14];
 		try{
 			for(int i=0; i<playgrid.length;i++){
 				for( int j=0; j<playgrid[i].length; j++){
@@ -187,17 +240,17 @@ public class GameDisplay extends JComponent{
 		/** 
 		 * Generates sassyvader panel
 		 */
-		ImageIcon defimage = new ImageIcon(new ImageIcon("DeathStarBlueprint.png").getImage().getScaledInstance(150,120, Image.SCALE_DEFAULT));
-		JLabel sassyvaderdefault = new JLabel ("",defimage,JLabel.CENTER);
+		vadericon = new ImageIcon(new ImageIcon("DeathStarBlueprintWide.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT));
+		sassyvader = new JLabel ("",vadericon,JLabel.CENTER);
 		sassyvaderPanel = new JPanel();
 		sassyvaderPanel.setBackground(Color.BLACK);
 		sassyvaderPanel.setOpaque(false);
-		sassyvaderPanel.add(sassyvaderdefault,BorderLayout.CENTER);
+		sassyvaderPanel.add(sassyvader,BorderLayout.CENTER);
 
 		/** 
-		 * Generates preview panel
+		 * Generates control panel
 		 */
-		controlPanel = new JPanel(new GridLayout(3,2,1,1));
+		controlPanel = new JPanel(new GridLayout(3,3,1,1));
 		controlPanel.setBackground(Color.BLACK);
 		controlPanel.setOpaque(true);
 		JButton pauseButton = new JButton("Pause");
@@ -205,6 +258,9 @@ public class GameDisplay extends JComponent{
 		pauseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Pause Game - needs to be added
+				//stop timer
+				//update game message
+				displayScreen("pauseScreen");
 			}
 		});
 		
@@ -213,16 +269,18 @@ public class GameDisplay extends JComponent{
 		quitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Quit Game
-				System.exit(0); //this works!
+				//updateSassyVader(2);
+				displayScreen("gameoverScreen");
+				//System.exit(0); //this works!
 			}
 		});
 		
 		/* Adds the components to the control panel. */
-		JLabel levelLabel = new JLabel("  Level:");
+		JLabel levelLabel = new JLabel(" Level:");
 		levelLabel.setFont(new Font("Courier New", Font.BOLD, 16));
 		levelLabel.setForeground(Color.WHITE);
 		
-		JLabel scoreLabel = new JLabel("  Score:");
+		JLabel scoreLabel = new JLabel(" Score:");
 		scoreLabel.setFont(new Font("Courier New", Font.BOLD, 16));
 		scoreLabel.setForeground(Color.WHITE);
 		
@@ -245,17 +303,27 @@ public class GameDisplay extends JComponent{
 		
 		/** 
 		 * Generates preview panel. Works the same way as the tetromino grid display.
-		 */
-		previewPanel = new JPanel(new GridLayout(8,8,1,1));
+		 */		
+		previewPanel = new JPanel();
 		previewPanel.setBackground(Color.BLACK);
 		previewPanel.setOpaque(true);
-		previewgrid = new JLabel[8][8];
+		
+		JLabel nextLabel = new JLabel(" Next:");
+		nextLabel.setFont(new Font("Courier New", Font.BOLD, 16));
+		nextLabel.setForeground(Color.WHITE);
+		previewPanel.add(nextLabel, BorderLayout.LINE_START);
+		
+		JPanel previewContainer = new JPanel(new GridLayout(8,6,1,1));
+		previewContainer.setOpaque(false);
+		previewPanel.add(previewContainer, BorderLayout.CENTER);
+
+		previewgrid = new JLabel[8][6];
 		try{
 			for(int i=0; i<previewgrid.length;i++){
 				for( int j=0; j<previewgrid[i].length; j++){
 					previewgrid[i][j] = new JLabel();
 					previewgrid[i][j].setIcon(new ImageIcon(" "));
-					previewPanel.add(previewgrid[i][j]);
+					previewContainer.add(previewgrid[i][j]);
 				}				
 			}
 		} catch (IndexOutOfBoundsException e) {
@@ -264,18 +332,37 @@ public class GameDisplay extends JComponent{
 		
 		
 		/** 
-		 * Add tetrisPanel panel, sassyvaderPanel, controlPanel, and previewPane to \
-		 * appropriate spots in frame.
+		 * Combines all containers and panels. 
 		 */
+	    frame.setLayout(tetrisLayout);  
+	    
+		/* this is the part that makes changing screens possible */
+		screens = new CardLayout();
+		screensContainer = new JPanel(screens);
+		screensContainer.setOpaque(false);
+		//screensContainer.add(welcomeScreen);
+		screensContainer.add(gameplayScreen);
+		screensContainer.add(pauseScreen);
+		screensContainer.add(gameoverScreen);
+		
+	    frame.add(screensContainer, BorderLayout.CENTER);
+		gameplayScreen.add(leftPanel, BorderLayout.WEST);
+		gameplayScreen.add(rightPanel, BorderLayout.CENTER);
+		gameplayScreen.add(bottomPanel, BorderLayout.SOUTH);
         rightPanel.add(tetrisPanel);
         leftPanel.add(sassyvaderPanel);
         leftPanel.add(controlPanel);
         leftPanel.add(previewPanel);
-
         
+    
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
+        
 	
+	}
+	
+	private void displayScreen (String screenname){
+		screens.show(screensContainer, screenname);
 	}
 }
