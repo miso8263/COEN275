@@ -1,20 +1,27 @@
 package tetris;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.Box;
-import javax.swing.GroupLayout;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+/*import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.border.LineBorder;
+import javax.swing.JPanel;*/
 
 /**
  * Class for displaying game elements to the screen.  
@@ -23,12 +30,31 @@ import javax.swing.border.LineBorder;
  * 
  * This is going to have some fields but we haven't worked that out yet
  */
-public class GameDisplay {
+public class GameDisplay extends JComponent{
 	//TODO: add fields, such as String flavorText, actual display, etc.
 	
-	JFrame frame;
-	JTextField textField_1;
-	JTextField textField;
+	static JFrame frame;
+	
+	static JPanel tetrisPanel;
+	static JPanel controlPanel;
+	static JPanel sassyvaderPanel;
+	static JPanel screensContainer;
+	static CardLayout screens;
+	static JLabel sassyvader;
+	static JPanel previewPanel;
+	static JLabel[][] playgrid;
+	static JLabel[][] previewgrid;
+	
+	static ImageIcon vadericon;
+	
+	JLabel scoreDisplay;
+	JLabel levelDisplay;
+	
+	private java.awt.Image image;
+	
+	public void ImagePanel(java.awt.Image image){
+		this.image = image;
+	}
 	
 	/**
 	 * Default constructor
@@ -37,11 +63,13 @@ public class GameDisplay {
 	public GameDisplay(){
 		
 		// Game board is 22 blocks high by 10 blocks wide
-		
 		// Game board has a border
 		initialize();
-		
+		displayScreen("gameplayScreen");
+		//screens.
+		System.out.println("constructor complete");
 	}
+	
 	
 	/**
 	 * Update display
@@ -51,7 +79,23 @@ public class GameDisplay {
 	 * 1 means block present
 	 */
 	public static void updateGridDisplay(boolean[][] gridData){
+		BufferedImage mino = null;
 		
+		ImageIcon minoIcon = new ImageIcon(new ImageIcon("Mino.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT));
+		JLabel minoLabel = new JLabel(minoIcon);
+		
+		for (int i = 0; i < gridData.length-2; i++) {	
+	    {
+	    	for (int j = 0; j < gridData[0].length; j++)
+	            {
+	                if (gridData[i][j])
+	                {
+	                	playgrid[i][j].setIcon(minoIcon);
+	                }              
+	            }
+	        }	    	
+		}
+		frame.setVisible(true);
 	}
 	
 	/**
@@ -63,135 +107,262 @@ public class GameDisplay {
 	}
 	
 	/**
-	 * Update preview of next shape to come
-	 * @param next tetromino
+	 * Update sassy vader image (pause, quit, etc)
+	 * @param int 1 = pause, 2 = endgame (quit or death), 3 = four
 	 */
-	public static void updatePreview(Tetromino tetromino){
+	public static void updateSassyVader(String event){
 		
+		Image vaderimage;
+	
+		if (event == "Pause"){
+				vaderimage = new ImageIcon("VaderPause.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+				vadericon.setImage(vaderimage);
+				sassyvader.revalidate();
+				sassyvader.repaint();
+				sassyvader.update(sassyvader.getGraphics());
+		}
+		else if (event == "Game Over"){
+				vaderimage = new ImageIcon("VaderDeath.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+				vadericon.setImage(vaderimage);
+				sassyvader.revalidate();
+				sassyvader.repaint();
+				sassyvader.update(sassyvader.getGraphics());	
+		}
+		else if (event == "Four"){
+				vaderimage = new ImageIcon("VaderFour.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+				vadericon.setImage(vaderimage);
+				sassyvader.revalidate();
+				sassyvader.repaint();
+				sassyvader.update(sassyvader.getGraphics());	
+		}
+		else {
+			vaderimage = new ImageIcon("DeathStarBlueprintWide.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+		}
+		
+
+
+	}
+	
+	/**
+	 * Update preview of next shape to come
+	 * @param next tetromino  -> I propose we change this to a boolean[][] previewData
+	 * to be consistent with the handling of the tetromino game board. 
+	 */
+	public static void updatePreview(boolean[][] previewData){
+		BufferedImage mino = null;
+		
+		ImageIcon minoIcon = new ImageIcon(new ImageIcon("Mino.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT));
+		JLabel minoLabel = new JLabel(minoIcon);
+		
+		for (int i = 0; i < previewData.length; i++) {	
+		
+	    	for (int j = 0; j < previewData[0].length; j++) {
+	                if (previewData[i][j])
+	                {
+	                	previewgrid[i][j].setIcon(minoIcon);
+	                }              
+	        }
+	    }	    	
+		
+		frame.setVisible(true);
 	}
 	
 	/**
 	 * Display score
 	 * @param score
 	 */
-	public static void updateScoreDisplay(int score){
+	public void updateScoreDisplay(int score){
+	//	this.scoreDisplay.setName(score);
 		
 	}
+	
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 490);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+    	
+		/**
+		 * Generates the frame
+		 */
+		frame = new JFrame("STAR TETRIS");
+		JLabel background = null;
+		try{
+			/* Loads the space background image */
+			background = new JLabel(new ImageIcon(ImageIO.read(new File("StarWarsSpace.png"))));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		/* Sets the space background */
+		frame.setContentPane(background);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		/* Sets coordinates of upper left corner of window. */
+		frame.setBounds(0, 0, 1, 1);
+		Dimension d = new Dimension(1000, 600);
+		frame.setMinimumSize(d);
 		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
 		
-		Box horizontalBox = Box.createHorizontalBox();
+		/* Creates all the containers for objects on the screen */
+		BorderLayout tetrisLayout = new BorderLayout();
+		JPanel gameplayScreen = new JPanel();
+		JPanel welcomeScreen = new JPanel();	
+		JPanel pauseScreen = new JPanel();
+		JPanel gameoverScreen = new JPanel();
+		JPanel leftPanel = new JPanel(new GridLayout(3,1,0,20));
+		JPanel rightPanel = new JPanel();
+		JPanel bottomPanel = new JPanel();
+		leftPanel.setOpaque(false);				/* .setOpaque(true), then will not be transparent */
+		rightPanel.setOpaque(false);
+		bottomPanel.setOpaque(false);
+		gameplayScreen.setOpaque(false);
+		welcomeScreen.setOpaque(false);
+		pauseScreen.setOpaque(false);
+
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(19)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(horizontalBox, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
-							.addGap(39))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
-								.addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(panel_3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
-							.addGap(18)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
-					.addGap(21))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(horizontalBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)))
-					.addContainerGap())
-		);
+		/** 
+		 * Generates tetris panel aka game board
+		 */
+		tetrisPanel = new JPanel(new GridLayout(28,14,1,1));
+		tetrisPanel.setBackground(Color.BLACK);
+		playgrid = new JLabel[28][14];
+		try{
+			for(int i=0; i<playgrid.length;i++){
+				for( int j=0; j<playgrid[i].length; j++){
+					playgrid[i][j] = new JLabel();
+					playgrid[i][j].setIcon(new ImageIcon(" "));
+					tetrisPanel.add(playgrid[i][j]);
+				}				
+			}
+		} catch (IndexOutOfBoundsException e) {
+    		e.printStackTrace();
+    	}
 		
-		JButton btnNewButton_1 = new JButton("Pause Game");
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton_1.addActionListener(new ActionListener() {
+     
+		/** 
+		 * Generates sassyvader panel
+		 */
+		vadericon = new ImageIcon(new ImageIcon("DeathStarBlueprintWide.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT));
+		sassyvader = new JLabel ("",vadericon,JLabel.CENTER);
+		sassyvaderPanel = new JPanel();
+		sassyvaderPanel.setBackground(Color.BLACK);
+		sassyvaderPanel.setOpaque(false);
+		sassyvaderPanel.add(sassyvader,BorderLayout.CENTER);
+
+		/** 
+		 * Generates control panel
+		 */
+		controlPanel = new JPanel(new GridLayout(3,3,1,1));
+		controlPanel.setBackground(Color.BLACK);
+		controlPanel.setOpaque(true);
+		JButton pauseButton = new JButton("Pause");
+		pauseButton.setFont(new Font("Courier New", Font.BOLD, 12));
+		pauseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Pause Game - needs to be added
+				//stop timer
+				//update game message
+				displayScreen("pauseScreen");
 			}
 		});
 		
-		JButton btnNewButton = new JButton("Quit Game");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JButton quitButton = new JButton("Quit");
+		quitButton.setFont(new Font("Courier New", Font.BOLD, 12));
+		quitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Quit Game
+				//updateSassyVader(2);
+				displayScreen("gameoverScreen");
+				//System.exit(0); //this works!
+			}
+		});
 		
-		JLabel lblNewLabel = new JLabel("Score");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		/* Adds the components to the control panel. */
+		JLabel levelLabel = new JLabel(" Level:");
+		levelLabel.setFont(new Font("Courier New", Font.BOLD, 16));
+		levelLabel.setForeground(Color.WHITE);
 		
-		JLabel lblLevel = new JLabel("Level");
-		lblLevel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		JLabel scoreLabel = new JLabel(" Score:");
+		scoreLabel.setFont(new Font("Courier New", Font.BOLD, 16));
+		scoreLabel.setForeground(Color.WHITE);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		scoreDisplay = new JLabel("0");
+		scoreDisplay.setFont(new Font("Courier New", Font.BOLD, 16));
+		scoreDisplay.setForeground(Color.WHITE);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblLevel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-								.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textField)))
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addGap(43)
-							.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(btnNewButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnNewButton_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-					.addGap(24))
-		);
-		gl_panel_2.setVerticalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGap(5)
-					.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblLevel)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-		);
-		panel_2.setLayout(gl_panel_2);
-		frame.getContentPane().setLayout(groupLayout);
+		levelDisplay = new JLabel("1");
+		levelDisplay.setFont(new Font("Courier New", Font.BOLD, 16));
+		levelDisplay.setForeground(Color.WHITE);
+		
+		controlPanel.add(pauseButton);
+		controlPanel.add(quitButton);
+		
+		controlPanel.add(levelLabel);		
+		controlPanel.add(levelDisplay);
+		controlPanel.add(scoreLabel);
+		controlPanel.add(scoreDisplay);
+		
+		
+		/** 
+		 * Generates preview panel. Works the same way as the tetromino grid display.
+		 */		
+		previewPanel = new JPanel();
+		previewPanel.setBackground(Color.BLACK);
+		previewPanel.setOpaque(true);
+		
+		JLabel nextLabel = new JLabel(" Next:");
+		nextLabel.setFont(new Font("Courier New", Font.BOLD, 16));
+		nextLabel.setForeground(Color.WHITE);
+		previewPanel.add(nextLabel, BorderLayout.LINE_START);
+		
+		JPanel previewContainer = new JPanel(new GridLayout(8,6,1,1));
+		previewContainer.setOpaque(false);
+		previewPanel.add(previewContainer, BorderLayout.CENTER);
+
+		previewgrid = new JLabel[8][6];
+		try{
+			for(int i=0; i<previewgrid.length;i++){
+				for( int j=0; j<previewgrid[i].length; j++){
+					previewgrid[i][j] = new JLabel();
+					previewgrid[i][j].setIcon(new ImageIcon(" "));
+					previewContainer.add(previewgrid[i][j]);
+				}				
+			}
+		} catch (IndexOutOfBoundsException e) {
+    		e.printStackTrace();
+    	}
+		
+		
+		/** 
+		 * Combines all containers and panels. 
+		 */
+	    frame.setLayout(tetrisLayout);  
+	    
+		/* this is the part that makes changing screens possible */
+		screens = new CardLayout();
+		screensContainer = new JPanel(screens);
+		screensContainer.setOpaque(false);
+		//screensContainer.add(welcomeScreen);
+		screensContainer.add(gameplayScreen);
+		screensContainer.add(pauseScreen);
+		screensContainer.add(gameoverScreen);
+		
+	    frame.add(screensContainer, BorderLayout.CENTER);
+		gameplayScreen.add(leftPanel, BorderLayout.WEST);
+		gameplayScreen.add(rightPanel, BorderLayout.CENTER);
+		gameplayScreen.add(bottomPanel, BorderLayout.SOUTH);
+        rightPanel.add(tetrisPanel);
+        leftPanel.add(sassyvaderPanel);
+        leftPanel.add(controlPanel);
+        leftPanel.add(previewPanel);
+        
+    
+        frame.pack();
+        frame.setVisible(true);
+        frame.setResizable(false);
+        
+	
+	}
+	
+	private void displayScreen (String screenname){
+		screens.show(screensContainer, screenname);
 	}
 }
