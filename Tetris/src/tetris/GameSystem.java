@@ -48,7 +48,7 @@ public class GameSystem {
 		this.nextShapeQueue = new ArrayList<Tetromino>();
 		for (int i = 0; i < 3; i++)
 		{
-			nextShapeQueue.add(createRandomTetromino());
+			this.nextShapeQueue.add(createRandomTetromino());
 		}
 	}
 	
@@ -282,6 +282,9 @@ public class GameSystem {
 		// Pop tetromino from queue
 		// Hold it in variable
 		this.activeTetromino = this.nextShapeQueue.remove(0);
+		
+		// Add a new tetromino
+		this.nextShapeQueue.add(createRandomTetromino());
 	}
 	
 	/**
@@ -364,7 +367,7 @@ public class GameSystem {
 			rowComplete = true;
 			for (int j = 0; j < WIDTH; j++) //columns
 			{
-				if (this.blockGrid[i][j])
+				if (!this.blockGrid[i][j])
 				{
 					rowComplete = false;
 				}
