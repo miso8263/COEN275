@@ -91,7 +91,11 @@ public class GameDisplay extends JComponent{
 	                if (gridData[i][j])
 	                {
 	                	playgrid[i][j].setIcon(minoIcon);
-	                }              
+	                }  
+	                else
+	                {
+	                	playgrid[i][j].setIcon(null);
+	                }
 	            }
 	        }	    	
 		}

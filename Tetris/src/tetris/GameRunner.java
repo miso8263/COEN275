@@ -30,8 +30,12 @@ public class GameRunner{
 	 * Function to begin game 
 	 */
 	static void startGame(){
+		
+		// Initialize display
+		GameDisplay tetrisDisplay = new GameDisplay();
+				
 		// Create game system object
-		GameSystem tetrisSystem = new GameSystem();
+		GameSystem tetrisSystem = new GameSystem(tetrisDisplay);
 		
 		// Set level to zero
 		level = 0;
@@ -39,11 +43,10 @@ public class GameRunner{
 		//paused is false
 		paused = false;
 		
-		// Initialize display
-		GameDisplay tetrisDisplay = new GameDisplay();
+		
 		
 		// Initialize Timer
-		Timekeeper tetrisTimer = new Timekeeper();
+		Timekeeper tetrisTimer = new Timekeeper(5, tetrisSystem);
 		
 		// Initialize Input Listener
 	}
