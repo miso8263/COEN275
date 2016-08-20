@@ -19,12 +19,15 @@ public class GameSystem {
 	private ArrayList<Tetromino> nextShapeQueue;
 	private Tetromino activeTetromino;
 	
+	private GameDisplay display;
+	
 	private boolean blockGrid[][];
 	
 	private static char[] shapeChoices = {'i', 'o', 's', 't', 'z', 'j', 'l'};
 	private static int HEIGHT = 22;
 	private static int WIDTH = 10;
 	private static int SHAPE_LAND_SCORE = 50;
+	private static int ROW_COMPLETE_SCORE = 75;
 	
 	/**
 	 * Default constructor for game system
@@ -32,7 +35,9 @@ public class GameSystem {
 	 * @return game system object
 	 * 
 	 */
-	public GameSystem(){
+	public GameSystem(GameDisplay disp){
+		this.display = disp;
+		
 		// Set score to zero
 		this.score = 0;
 		
@@ -43,7 +48,7 @@ public class GameSystem {
 		this.nextShapeQueue = new ArrayList<Tetromino>();
 		for (int i = 0; i < 3; i++)
 		{
-			nextShapeQueue.add(createRandomTetromino());
+			this.nextShapeQueue.add(createRandomTetromino());
 		}
 	}
 	
@@ -72,6 +77,50 @@ public class GameSystem {
 		Random rand = new Random();
 		
 		return new Tetromino(shapeChoices[rand.nextInt(shapeChoices.length)]);
+	}
+	
+	/**
+	 * Combine tetromino and grid data for display
+	 * @return combined boolean grid
+	 */
+	public boolean[][] overlayTetromino()
+	{
+		int i, j;
+		
+		// Get location of active tetromino
+		boolean[][] tempGrid = this.activeTetromino.getShapeGrid().clone();
+		int x_loc = this.activeTetromino.getXLocation();
+		int y_loc = this.activeTetromino.getYLocation();
+		
+		boolean[][] overlaidGrid = new boolean[HEIGHT][WIDTH];
+		for (i = 0; i < this.blockGrid.length; i++) //rows
+		{
+			for (j = 0; j < this.blockGrid[0].length; j++) //columns
+			{
+				overlaidGrid[i][j] = this.blockGrid[i][j];
+			}
+		}
+		
+		// Get positions of each of its blocks
+		// Incorporate these into the current grid
+		for (i = 0; i < tempGrid.length; i++) //rows
+		{
+			for (j = 0; j < tempGrid[0].length; j++) //columns
+			{
+				if (tempGrid[i][j])
+				{
+					int new_y = i + y_loc;
+					int new_x = j + x_loc;
+					if ( new_y > 0 && new_y < HEIGHT && new_x > 0 && new_x < WIDTH)
+					{
+						overlaidGrid[i + y_loc][j + x_loc] = true;
+					}
+				}
+			}
+		}
+		
+		return overlaidGrid;
+		
 	}
 	
 	/**
@@ -216,7 +265,7 @@ public class GameSystem {
 		}
 		
 		// TODO: update display
-		
+		this.display.updateGridDisplay(overlayTetromino());
 	}
 	
 	/**
@@ -229,10 +278,13 @@ public class GameSystem {
 	/**
 	 * Grab new active tetromino
 	 */
-	private void setActiveTetromino(){
+	protected void setActiveTetromino(){
 		// Pop tetromino from queue
 		// Hold it in variable
 		this.activeTetromino = this.nextShapeQueue.remove(0);
+		
+		// Add a new tetromino
+		this.nextShapeQueue.add(createRandomTetromino());
 	}
 	
 	/**
@@ -246,19 +298,13 @@ public class GameSystem {
 	/**
 	 * Release tetromino so it can begin moving
 	 */
-	private void releaseTetromino(){
+	protected void releaseTetromino(){
 		// Generate initial tetromino position		
 		boolean[][] tempGrid = this.activeTetromino.getShapeGrid();
 		int x_pos = 0; //leftmost x position to "center" tetromino in grid
 		// 0 1 2 3 4 5 6 7 8 9
-		if (tempGrid[0].length == 2)
-		{
-			x_pos = 4;
-		}
-		else
-		{
-			x_pos = 3;
-		}
+		x_pos = 3;
+		
 		
 		// If tetromino cannot move up, game over
 		if (this.blockGrid[HEIGHT-1][x_pos] || this.blockGrid[HEIGHT-2][x_pos])
@@ -291,7 +337,12 @@ public class GameSystem {
 			{
 				if (tempGrid[i][j])
 				{
-					this.blockGrid[i + y_loc][j + x_loc] = true;
+					int new_y = i + y_loc;
+					int new_x = j + x_loc;
+					if ( new_y > 0 && new_y < HEIGHT && new_x > 0 && new_x < WIDTH)
+					{
+						this.blockGrid[i + y_loc][j + x_loc] = true;
+					}
 				}
 			}
 		}
@@ -316,7 +367,7 @@ public class GameSystem {
 			rowComplete = true;
 			for (int j = 0; j < WIDTH; j++) //columns
 			{
-				if (this.blockGrid[i][j])
+				if (!this.blockGrid[i][j])
 				{
 					rowComplete = false;
 				}
@@ -338,7 +389,10 @@ public class GameSystem {
 				}
 			}
 		}
+		// TODO: increment score
+		this.score += ROW_COMPLETE_SCORE;
 		// TODO: update display
+		this.display.updateGridDisplay(overlayTetromino());
 	}
 	
 }
