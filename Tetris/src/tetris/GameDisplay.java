@@ -369,4 +369,9 @@ public class GameDisplay extends JComponent{
 	private void displayScreen (String screenname){
 		screens.show(screensContainer, screenname);
 	}
+	
+	public JPanel getPanel()
+	{
+		return tetrisPanel;
+	}
 }

@@ -7,6 +7,7 @@ import java.util.Timer;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
@@ -28,6 +29,50 @@ public class GameRunner{
 	private static GameDisplay tetrisDisplay;
 	private static GameSystem tetrisSystem;
 	private static Timer gameTimer;
+	
+	static Action aAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// Listener: Press A
+			// Behavior: Rotate counterclockwise
+			System.out.println("A pressed");
+			tetrisSystem.moveActiveTetromino(0, 0, -1);
+		}
+	};
+
+	static Action dAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// Listener: Press D
+			// Behavior: Rotate clockwise
+			System.out.println("D pressed");
+			tetrisSystem.moveActiveTetromino(0, 0, 1);
+		}
+	};
+	
+	static Action leftAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// Listener: Press Left arrow
+			// Behavior: Shift Tetromino left 
+			System.out.println("left pressed");
+			tetrisSystem.moveActiveTetromino(-1, 0, 0);
+		}
+	};
+
+	static Action rightAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// Listener: Press Right arrow
+			// Behavior: Shift Tetromino right
+			System.out.println("right pressed");
+			tetrisSystem.moveActiveTetromino(1, 0, 0);
+		}
+	};
+	
+	static Action upAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// Listener: Press Up arrow
+			// Behavior: "Lift" Tetromino into place
+			tetrisSystem.moveActiveTetromino(0, -1, 0);
+		}
+	};
 	/**
 	 * Default constructor for the Runner class
 	 * 
@@ -68,8 +113,6 @@ public class GameRunner{
 		
 		tetrisSystem.releaseTetromino();
 		
-		System.out.println("DAT SPEED THO" +tetrisTimer.getSpeed());
-		
 		gameTimer.scheduleAtFixedRate(tetrisTimer, 0, tetrisTimer.getSpeed());
 	}
 	
@@ -78,51 +121,6 @@ public class GameRunner{
 	 * 
 	 */
 	static void initializeListener(){
-			
-		Action aAction = new AbstractAction(){
-			public void actionPerformed(ActionEvent e){
-				// Listener: Press A
-				// Behavior: Rotate counterclockwise
-				System.out.println("A pressed");
-				tetrisSystem.moveActiveTetromino(0, 0, -1);
-			}
-		};
-
-		Action dAction = new AbstractAction(){
-			public void actionPerformed(ActionEvent e){
-				// Listener: Press D
-				// Behavior: Rotate clockwise
-				System.out.println("D pressed");
-				tetrisSystem.moveActiveTetromino(0, 0, 1);
-			}
-		};
-		
-		Action leftAction = new AbstractAction(){
-			public void actionPerformed(ActionEvent e){
-				// Listener: Press Left arrow
-				// Behavior: Shift Tetromino left 
-				System.out.println("left pressed");
-				tetrisSystem.moveActiveTetromino(-1, 0, 0);
-			}
-		};
-
-		Action rightAction = new AbstractAction(){
-			public void actionPerformed(ActionEvent e){
-				// Listener: Press Right arrow
-				// Behavior: Shift Tetromino right
-				System.out.println("right pressed");
-				tetrisSystem.moveActiveTetromino(1, 0, 0);
-			}
-		};
-		
-		Action upAction = new AbstractAction(){
-			public void actionPerformed(ActionEvent e){
-				// Listener: Press Up arrow
-				// Behavior: "Lift" Tetromino into place
-				tetrisSystem.moveActiveTetromino(0, -1, 0);
-			}
-		};
-
 		//Listener: Press Spacebar
 		// Behavior: Pause Game
 		
@@ -132,11 +130,17 @@ public class GameRunner{
 		// If they press Enter, Quit Game
 		
 		
-		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("a"), aAction);
-		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("d"), dAction);
-		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), leftAction);
-		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), rightAction);
-		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("UP"), upAction);	
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "aAction");
+		tetrisDisplay.getPanel().getActionMap().put("aAction", aAction);
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "dAction");
+		tetrisDisplay.getPanel().getActionMap().put("dAction", dAction);
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "leftAction");
+		tetrisDisplay.getPanel().getActionMap().put("leftAction", leftAction);
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "rightAction");
+		tetrisDisplay.getPanel().getActionMap().put("rightAction", rightAction);
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "upAction");
+		tetrisDisplay.getPanel().getActionMap().put("upAction", upAction);
+		
 	}
 	
 
