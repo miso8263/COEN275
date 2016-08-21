@@ -1,6 +1,14 @@
 package tetris;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Timer;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 
 /**
  * Class for interacting with the user and executing gameplay instructions.
@@ -17,6 +25,9 @@ import java.awt.event.KeyListener;
 public class GameRunner{
 	private static int level;
 	private static boolean paused;
+	private static GameDisplay tetrisDisplay;
+	private static GameSystem tetrisSystem;
+	private static Timer gameTimer;
 	/**
 	 * Default constructor for the Runner class
 	 * 
@@ -32,10 +43,10 @@ public class GameRunner{
 	static void startGame(){
 		
 		// Initialize display
-		GameDisplay tetrisDisplay = new GameDisplay();
+		tetrisDisplay = new GameDisplay();
 				
 		// Create game system object
-		GameSystem tetrisSystem = new GameSystem(tetrisDisplay);
+		tetrisSystem = new GameSystem(tetrisDisplay);
 		
 		// Set level to zero
 		level = 0;
@@ -46,40 +57,89 @@ public class GameRunner{
 		
 		
 		// Initialize Timer
-		Timekeeper tetrisTimer = new Timekeeper(5, tetrisSystem);
+		Timekeeper tetrisTimer = new Timekeeper(1000, tetrisSystem);
+		gameTimer = new Timer();
+		
 		
 		// Initialize Input Listener
+		initializeListener();
+		
+		tetrisSystem.setActiveTetromino();
+		
+		tetrisSystem.releaseTetromino();
+		
+		System.out.println("DAT SPEED THO" +tetrisTimer.getSpeed());
+		
+		gameTimer.scheduleAtFixedRate(tetrisTimer, 0, tetrisTimer.getSpeed());
 	}
 	
 	/**
 	 * This will become the input listener, which passes user input to system
 	 * 
-	 * @param user input
 	 */
-	static void inputListener(){
-		// Listener: Press A
-			// Behavior: Rotate counterclockwise
-		// Listener: Press D
-			// Behavior: Rotate clockwise
+	static void initializeListener(){
+			
+		Action aAction = new AbstractAction(){
+			public void actionPerformed(ActionEvent e){
+				// Listener: Press A
+				// Behavior: Rotate counterclockwise
+				System.out.println("A pressed");
+				tetrisSystem.moveActiveTetromino(0, 0, -1);
+			}
+		};
+
+		Action dAction = new AbstractAction(){
+			public void actionPerformed(ActionEvent e){
+				// Listener: Press D
+				// Behavior: Rotate clockwise
+				System.out.println("D pressed");
+				tetrisSystem.moveActiveTetromino(0, 0, 1);
+			}
+		};
 		
-		// Listener: Press Left arrow
-			// Behavior: Shift Tetromino left 
+		Action leftAction = new AbstractAction(){
+			public void actionPerformed(ActionEvent e){
+				// Listener: Press Left arrow
+				// Behavior: Shift Tetromino left 
+				System.out.println("left pressed");
+				tetrisSystem.moveActiveTetromino(-1, 0, 0);
+			}
+		};
+
+		Action rightAction = new AbstractAction(){
+			public void actionPerformed(ActionEvent e){
+				// Listener: Press Right arrow
+				// Behavior: Shift Tetromino right
+				System.out.println("right pressed");
+				tetrisSystem.moveActiveTetromino(1, 0, 0);
+			}
+		};
 		
-		// Listener: Press Right arrow
-			// Behavior: Shift Tetromino right
-		
-		// Listener: Press Up arrow
-			// Behavior: "Lift" Tetromino into place
-		
-		//Listner: Press Spacebar
-			// Behavior: Pause Game
+		Action upAction = new AbstractAction(){
+			public void actionPerformed(ActionEvent e){
+				// Listener: Press Up arrow
+				// Behavior: "Lift" Tetromino into place
+				tetrisSystem.moveActiveTetromino(0, -1, 0);
+			}
+		};
+
+		//Listener: Press Spacebar
+		// Behavior: Pause Game
 		
 		// Listener: Press Esc
-			// Behavior: Pause Game
-			// Print "Quit Game"
-			// If they press Enter, Quit Game
-	
+		// Behavior: Pause Game
+		// Print "Quit Game"
+		// If they press Enter, Quit Game
+		
+		
+		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("a"), aAction);
+		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("d"), dAction);
+		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), leftAction);
+		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), rightAction);
+		tetrisDisplay.getInputMap().put(KeyStroke.getKeyStroke("UP"), upAction);	
 	}
+	
+
 	
 	static void levelUp(){
 		// Print level up message
@@ -128,7 +188,9 @@ public class GameRunner{
 		startGame();
 		
 		// Begin gameplay
-		System.out.println("Game not implemented yet.  Try again later.\n");
+		tetrisSystem.setActiveTetromino();
+		
+		tetrisSystem.releaseTetromino();
 				
 		// While game is not over
 		

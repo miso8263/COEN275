@@ -37,8 +37,9 @@ public class Timekeeper extends TimerTask{
 	public Timekeeper(int _speed, GameSystem ge){
 		
 		this.localSystem = ge;
-		this.speed=speed;
+		this.speed = _speed;
 	}
+	
 	public void run(){
 		localSystem.moveActiveTetromino(0, -1, 0);
 	}
