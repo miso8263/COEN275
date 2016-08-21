@@ -87,40 +87,46 @@ public class GameSystem {
 	{
 		int i, j;
 		
-		// Get location of active tetromino
-		boolean[][] tempGrid = this.activeTetromino.getShapeGrid().clone();
-		int x_loc = this.activeTetromino.getXLocation();
-		int y_loc = this.activeTetromino.getYLocation();
-		
-		boolean[][] overlaidGrid = new boolean[HEIGHT][WIDTH];
-		for (i = 0; i < this.blockGrid.length; i++) //rows
+		if (this.activeTetromino != null)
 		{
-			for (j = 0; j < this.blockGrid[0].length; j++) //columns
+			// Get location of active tetromino
+			boolean[][] tempGrid = this.activeTetromino.getShapeGrid().clone();
+			int x_loc = this.activeTetromino.getXLocation();
+			int y_loc = this.activeTetromino.getYLocation();
+			
+			boolean[][] overlaidGrid = new boolean[HEIGHT][WIDTH];
+			for (i = 0; i < this.blockGrid.length; i++) //rows
 			{
-				overlaidGrid[i][j] = this.blockGrid[i][j];
-			}
-		}
-		
-		// Get positions of each of its blocks
-		// Incorporate these into the current grid
-		for (i = 0; i < tempGrid.length; i++) //rows
-		{
-			for (j = 0; j < tempGrid[0].length; j++) //columns
-			{
-				if (tempGrid[i][j])
+				for (j = 0; j < this.blockGrid[0].length; j++) //columns
 				{
-					int new_y = i + y_loc;
-					int new_x = j + x_loc;
-					if ( new_y > 0 && new_y < HEIGHT && new_x > 0 && new_x < WIDTH)
+					overlaidGrid[i][j] = this.blockGrid[i][j];
+				}
+			}
+			
+			// Get positions of each of its blocks
+			// Incorporate these into the current grid
+			for (i = 0; i < tempGrid.length; i++) //rows
+			{
+				for (j = 0; j < tempGrid[0].length; j++) //columns
+				{
+					if (tempGrid[i][j])
 					{
-						overlaidGrid[i + y_loc][j + x_loc] = true;
+						int new_y = i + y_loc;
+						int new_x = j + x_loc;
+						if ( new_y > 0 && new_y < HEIGHT && new_x > 0 && new_x < WIDTH)
+						{
+							overlaidGrid[i + y_loc][j + x_loc] = true;
+						}
 					}
 				}
 			}
-		}
 		
 		return overlaidGrid;
-		
+		}
+		else
+		{
+			return this.blockGrid;
+		}
 	}
 	
 	/**
