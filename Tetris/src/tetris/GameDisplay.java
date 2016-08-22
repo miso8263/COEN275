@@ -132,6 +132,13 @@ public class GameDisplay extends JComponent{
 				sassyvader.repaint();
 				sassyvader.update(sassyvader.getGraphics());
 		}
+		else if (event == "Quit"){
+				vaderimage = new ImageIcon("VaderQuit.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+				vadericon.setImage(vaderimage);
+				sassyvader.revalidate();
+				sassyvader.repaint();
+				sassyvader.update(sassyvader.getGraphics());	
+		}
 		else if (event == "Game Over"){
 				vaderimage = new ImageIcon("VaderDeath.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
 				vadericon.setImage(vaderimage);
@@ -216,7 +223,7 @@ public class GameDisplay extends JComponent{
 		lockout=true;
 		layeredContainer.moveToFront(gameoverPanel);
 		gameoverPanel.setVisible(true);
-		updateSassyVader("Game Over");
+		//updateSassyVader("Game Over");
 		GameRunner.pauseGame(true);
 	}
 	
@@ -348,7 +355,9 @@ public class GameDisplay extends JComponent{
 			public void actionPerformed(ActionEvent e) {
 				//Quit Game
 				if(lockout==false){
+					updateSassyVader("Quit");
 					endGame();
+					
 				}
 				//otherwise do nothing
 			}
