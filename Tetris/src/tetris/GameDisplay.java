@@ -223,7 +223,6 @@ public class GameDisplay extends JComponent{
 		lockout=true;
 		layeredContainer.moveToFront(gameoverPanel);
 		gameoverPanel.setVisible(true);
-		//updateSassyVader("Game Over");
 		GameRunner.pauseGame(true);
 	}
 	
