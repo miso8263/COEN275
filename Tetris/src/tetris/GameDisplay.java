@@ -119,7 +119,7 @@ public class GameDisplay extends JComponent{
 	
 	/**
 	 * Update sassy vader image (pause, quit, etc)
-	 * @param pause, game over, four
+	 * @param Pause, Game Over, Four, Level Up
 	 */
 	public static void updateSassyVader(String event){
 		
@@ -138,6 +138,13 @@ public class GameDisplay extends JComponent{
 				sassyvader.revalidate();
 				sassyvader.repaint();
 				sassyvader.update(sassyvader.getGraphics());	
+		}
+		else if(event == "Level Up"){
+				vaderimage = new ImageIcon("VaderForce.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
+				vadericon.setImage(vaderimage);
+				sassyvader.revalidate();
+				sassyvader.repaint();
+				sassyvader.update(sassyvader.getGraphics());
 		}
 		else if (event == "Four"){
 				vaderimage = new ImageIcon("VaderFour.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
@@ -340,7 +347,7 @@ public class GameDisplay extends JComponent{
 		quitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Quit Game
-				if(pausestate==false & lockout==false){
+				if(lockout==false){
 					endGame();
 				}
 				//otherwise do nothing
