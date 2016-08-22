@@ -34,7 +34,6 @@ public class GameRunner{
 		public void actionPerformed(ActionEvent e){
 			// Listener: Press A
 			// Behavior: Rotate counterclockwise
-			System.out.println("A pressed");
 			tetrisSystem.moveActiveTetromino(0, 0, -1);
 		}
 	};
@@ -43,7 +42,6 @@ public class GameRunner{
 		public void actionPerformed(ActionEvent e){
 			// Listener: Press D
 			// Behavior: Rotate clockwise
-			System.out.println("D pressed");
 			tetrisSystem.moveActiveTetromino(0, 0, 1);
 		}
 	};
@@ -52,7 +50,6 @@ public class GameRunner{
 		public void actionPerformed(ActionEvent e){
 			// Listener: Press Left arrow
 			// Behavior: Shift Tetromino left 
-			System.out.println("left pressed");
 			tetrisSystem.moveActiveTetromino(-1, 0, 0);
 		}
 	};
@@ -61,7 +58,6 @@ public class GameRunner{
 		public void actionPerformed(ActionEvent e){
 			// Listener: Press Right arrow
 			// Behavior: Shift Tetromino right
-			System.out.println("right pressed");
 			tetrisSystem.moveActiveTetromino(1, 0, 0);
 		}
 	};
@@ -93,13 +89,13 @@ public class GameRunner{
 		// Create game system object
 		tetrisSystem = new GameSystem(tetrisDisplay);
 		
+		tetrisDisplay.updateScoreDisplay(tetrisSystem.getScore());
+		
 		// Set level to zero
 		level = 0;
 		
 		//paused is false
 		paused = false;
-		
-		
 		
 		// Initialize Timer
 		Timekeeper tetrisTimer = new Timekeeper(1000, tetrisSystem);

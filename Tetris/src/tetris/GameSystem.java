@@ -24,8 +24,8 @@ public class GameSystem {
 	private boolean blockGrid[][];
 	
 	private static char[] shapeChoices = {'i', 'o', 's', 't', 'z', 'j', 'l'};
-	private static int HEIGHT = 22;
-	private static int WIDTH = 10;
+	private static int HEIGHT = 30;
+	private static int WIDTH = 14;
 	private static int SHAPE_LAND_SCORE = 50;
 	private static int ROW_COMPLETE_SCORE = 75;
 	
@@ -113,7 +113,7 @@ public class GameSystem {
 					{
 						int new_y = i + y_loc;
 						int new_x = j + x_loc;
-						if ( new_y > 0 && new_y < HEIGHT && new_x > 0 && new_x < WIDTH)
+						if ( new_y >= 0 && new_y < HEIGHT && new_x >= 0 && new_x < WIDTH)
 						{
 							overlaidGrid[i + y_loc][j + x_loc] = true;
 						}
@@ -127,6 +127,31 @@ public class GameSystem {
 		{
 			return this.blockGrid;
 		}
+	}
+	
+	public boolean[][] overlayPreview()
+	{
+		int i, j;
+		boolean[][] overlaidGrid = new boolean[8][6];
+		boolean[][] previewGrid = this.nextShapeQueue.get(0).getShapeGrid();
+		
+		for (i = 0; i < overlaidGrid.length; i++) //rows
+		{
+			for (j = 0; j < overlaidGrid[0].length; j++) //columns
+			{
+				overlaidGrid[i][j] = false;
+			}
+		}
+		
+		for (i = 0; i < previewGrid.length; i++) //rows
+		{
+			for (j = 0; j < previewGrid[0].length; j++) //columns
+			{
+				overlaidGrid[i+2][j+2] = previewGrid[i][j];
+			}
+		}
+		
+		return overlaidGrid;
 	}
 	
 	/**
@@ -171,7 +196,7 @@ public class GameSystem {
 				for (j = 0; j < tempGrid[0].length; j++) //columns
 				{
 					// Out of bounds to the left
-					if (tempGrid[i][j] && (j+x_loc < 0))
+					if (tempGrid[i][j] && (j+x_loc <= 0))
 					{
 						// Undo rotation
 						this.activeTetromino.rotate(rotation*-1);;
@@ -179,7 +204,15 @@ public class GameSystem {
 					}
 					
 					// Out of bounds to the right
-					if (tempGrid[i][j] && (j+x_loc > WIDTH))
+					if (tempGrid[i][j] && (j+x_loc >= WIDTH))
+					{
+						// Undo rotation
+						this.activeTetromino.rotate(rotation*-1);;
+						return;
+					}
+					
+					// Out of bounds to the bottom (someone tried rotating as it released
+					if (tempGrid[i][j] && (i+y_loc >= HEIGHT))
 					{
 						// Undo rotation
 						this.activeTetromino.rotate(rotation*-1);;
@@ -234,7 +267,7 @@ public class GameSystem {
 						
 						else if (x_direction == 1)
 						{
-							if ((j+x_loc >= WIDTH))
+							if ((j+x_loc >= WIDTH-1))
 							{
 								// Up against the wall; don't move
 								return;
@@ -308,8 +341,8 @@ public class GameSystem {
 		// Generate initial tetromino position		
 		boolean[][] tempGrid = this.activeTetromino.getShapeGrid();
 		int x_pos = 0; //leftmost x position to "center" tetromino in grid
-		// 0 1 2 3 4 5 6 7 8 9
-		x_pos = 3;
+		// 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+		x_pos = 5;
 		
 		
 		// If tetromino cannot move up, game over
@@ -320,6 +353,10 @@ public class GameSystem {
 		}
 		
 		this.activeTetromino.setLocation(x_pos, HEIGHT-2);
+		
+		// Update preview with next tetromino to come
+		this.display.updatePreview(overlayPreview());
+		
 	}
 	
 	/** 
@@ -345,7 +382,7 @@ public class GameSystem {
 				{
 					int new_y = i + y_loc;
 					int new_x = j + x_loc;
-					if ( new_y > 0 && new_y < HEIGHT && new_x > 0 && new_x < WIDTH)
+					if ( new_y >= 0 && new_y < HEIGHT && new_x >= 0 && new_x < WIDTH)
 					{
 						this.blockGrid[i + y_loc][j + x_loc] = true;
 					}
@@ -354,6 +391,7 @@ public class GameSystem {
 		}
 		
 		this.score += SHAPE_LAND_SCORE;
+		this.display.updateScoreDisplay(this.score);
 		
 		completeRows();
 		
@@ -393,11 +431,11 @@ public class GameSystem {
 						this.blockGrid[m][n] = this.blockGrid[m+1][n];
 					}
 				}
+				
+				this.score += ROW_COMPLETE_SCORE;
+				this.display.updateScoreDisplay(this.score);
 			}
 		}
-		// TODO: increment score
-		this.score += ROW_COMPLETE_SCORE;
-		// TODO: update display
 		this.display.updateGridDisplay(overlayTetromino());
 	}
 	
