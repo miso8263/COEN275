@@ -50,7 +50,7 @@ public class GameDisplay extends JComponent{
 	JLabel scoreDisplay;
 	JLabel levelDisplay;
 	
-	boolean pausestate;
+	static boolean pausestate;
 	static boolean lockout;
 	
 	private java.awt.Image image;
@@ -251,6 +251,24 @@ public class GameDisplay extends JComponent{
 		gameoverPanel.setVisible(true);
 		GameRunner.pauseGame(true);
 	}
+	/**
+	 * pause game
+	 */
+	static void pause()
+	{
+		if(pausestate==false & lockout==false){
+			layeredContainer.moveToFront(pausePanel);
+			pausePanel.setVisible(true);
+			updateSassyVader("Pause");
+			pausestate = true;
+		}
+		else if (pausestate==true & lockout==false){
+			pausePanel.setVisible(false);
+			updateSassyVader("Default");
+			pausestate = false;
+		}
+		GameRunner.pauseGame(pausestate);
+	}
 	
 	/**
 	 * Create containers and initial values for display components
@@ -359,18 +377,7 @@ public class GameDisplay extends JComponent{
 		pauseButton.setFont(new Font("Courier New", Font.BOLD, 12));
 		pauseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(pausestate==false & lockout==false){
-					layeredContainer.moveToFront(pausePanel);
-					pausePanel.setVisible(true);
-					updateSassyVader("Pause");
-					pausestate = true;
-				}
-				else if (pausestate==true & lockout==false){
-					pausePanel.setVisible(false);
-					updateSassyVader("Default");
-					pausestate = false;
-				}
-				GameRunner.pauseGame(pausestate);
+				pause();
 			}
 		});
 		
@@ -380,6 +387,8 @@ public class GameDisplay extends JComponent{
 			public void actionPerformed(ActionEvent e) {
 				//Quit Game
 				if(lockout==false){
+					GameRunner.killVader.cancel();
+					GameRunner.killVader.purge();
 					updateSassyVader("Quit");
 					endGame();
 					
