@@ -3,8 +3,16 @@ package tetris;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
+import java.util.TimerTask;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -33,6 +41,15 @@ public class GameRunner{
 	private static GameSystem tetrisSystem;
 	private static Timekeeper tetrisTimer;
 	private static Timer gameTimer;
+	
+	private static AudioInputStream mainTheme;
+	private static AudioInputStream imperialMarch;
+	private static AudioInputStream vaderSound;
+	private static Clip themeClip;
+	private static Clip imperialClip;
+	private static Clip vaderClip;
+	
+	static Timer killVader;
 	
 	private static double SPEED_MODIFIER = .8; // Deliberately fast for demo purposes; for real play do .9
 	
@@ -83,6 +100,20 @@ public class GameRunner{
 		}
 	};
 	
+	static Action spaceAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// Pause Game
+			tetrisDisplay.pause();
+		}
+	};
+	
+	static Action escAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// End game
+			tetrisDisplay.endGame();
+		}
+	};
+	
 	/**
 	 * Function to begin game 
 	 * Initialize game components
@@ -121,6 +152,19 @@ public class GameRunner{
 		tetrisSystem.releaseTetromino();
 		
 		gameTimer.scheduleAtFixedRate(tetrisTimer, 0, tetrisTimer.getSpeed());
+		
+		try {
+			startTheme();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -139,6 +183,14 @@ public class GameRunner{
 		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "upAction");
 		tetrisDisplay.getPanel().getActionMap().put("upAction", upAction);
 		
+		// Pause
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "spaceAction");
+		tetrisDisplay.getPanel().getActionMap().put("spaceAction", spaceAction);
+		
+		// Quit
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escAction");
+		tetrisDisplay.getPanel().getActionMap().put("escAction", escAction);
+		
 	}
 	
 	/**
@@ -150,6 +202,15 @@ public class GameRunner{
 		
 		// Print level up message
 		tetrisDisplay.updateLevelDisplay(level);
+		tetrisDisplay.updateSassyVader("Level Up");
+		
+		killVader = new Timer();
+		killVader.schedule(new TimerTask(){
+			@Override
+			public void run(){
+				tetrisDisplay.updateSassyVader("");;
+			}
+		}, 3000);
 		
 		// Score threshold is updated
 		SCORE_THRESHOLD += 500;
@@ -227,8 +288,51 @@ public class GameRunner{
 		tetrisTimer = null;
 		gameTimer = null;
 		
+		stopMusic();
+		
 		// Start game
 		startGame();
+	}
+	
+	// Music Handling
+	
+	static void startTheme() throws UnsupportedAudioFileException, IOException, LineUnavailableException
+	{
+		// Sound From http://www.moviewavs.com/Movies/Star_Wars.html
+		mainTheme = AudioSystem.getAudioInputStream(new File("starwars.wav"));
+		themeClip = AudioSystem.getClip();
+		themeClip.open( mainTheme );
+		themeClip.start();
+	}
+	
+	static void startMarch() throws UnsupportedAudioFileException, IOException, LineUnavailableException
+	{
+		// Sound From http://www.moviewavs.com/Movies/Star_Wars.html
+		imperialMarch = AudioSystem.getAudioInputStream(new File("imperial.wav"));
+	    imperialClip = AudioSystem.getClip();
+	    imperialClip.open( imperialMarch );
+	    imperialClip.start();
+	}
+	
+	static void startVader() throws UnsupportedAudioFileException, IOException, LineUnavailableException
+	{
+		// Sound From http://www.thesoundarchive.com/starward/swvader02.wav
+		vaderSound = AudioSystem.getAudioInputStream(new File("VaderBreathing.wav"));
+		vaderClip = AudioSystem.getClip();
+		vaderClip.open( vaderSound );
+		vaderClip.start();
+	}
+	
+	static void stopMusic()
+	{
+		if (themeClip != null)
+		{
+			themeClip.stop();
+		}
+		if (imperialClip != null)
+		{
+			imperialClip.stop();
+		}
 	}
 	
 	/**
