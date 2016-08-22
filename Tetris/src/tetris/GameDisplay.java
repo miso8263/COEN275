@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 /**
@@ -124,6 +126,7 @@ public class GameDisplay extends JComponent{
 	public static void updateSassyVader(String event){
 		
 		Image vaderimage;
+		boolean notVader = false;
 	
 		if (event == "Pause"){
 				vaderimage = new ImageIcon("VaderPause.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
@@ -166,9 +169,24 @@ public class GameDisplay extends JComponent{
 			sassyvader.revalidate();
 			sassyvader.repaint();
 			sassyvader.update(sassyvader.getGraphics());	
+			notVader = true;
 		}
 		
-
+		if (!notVader)
+		{
+			try {
+				GameRunner.startVader();
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 	}
 	
@@ -216,6 +234,18 @@ public class GameDisplay extends JComponent{
 	 */
 	static void endGame()
 	{
+		try {
+			GameRunner.startMarch();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		lockout=true;
 		layeredContainer.moveToFront(gameoverPanel);
 		gameoverPanel.setVisible(true);
@@ -284,6 +314,7 @@ public class GameDisplay extends JComponent{
 			public void actionPerformed(ActionEvent e) {
 				screens.show(screensContainer,"Gameplay");
 				GameRunner.pauseGame(false);
+				GameRunner.stopMusic();
 			}
 		});
 		welcomeScreen.add(startButton,BorderLayout.SOUTH);
