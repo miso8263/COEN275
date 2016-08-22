@@ -34,6 +34,8 @@ public class GameRunner{
 	private static Timekeeper tetrisTimer;
 	private static Timer gameTimer;
 	
+	private static double SPEED_MODIFIER = .8; // Deliberately fast for demo purposes; for real play do .9
+	
 	static int SCORE_THRESHOLD = 500;
 	static int SHAPE_LAND_SCORE = 50;
 	static int ROW_COMPLETE_SCORE = 75;
@@ -154,7 +156,7 @@ public class GameRunner{
 		
 		// Calculate new speed
 		// Speed of drop is increased
-		int newSpeed = (int)Math.round(tetrisTimer.getSpeed()*.9);		
+		int newSpeed = (int)Math.round(tetrisTimer.getSpeed()*SPEED_MODIFIER);		
 		
 		// Purge and restart timer
 		gameTimer.cancel();
@@ -196,6 +198,7 @@ public class GameRunner{
 	static void loseGame(){
 		// Loser message printed
 		// call endGame
+		tetrisDisplay.updateSassyVader("Game Over");
 		tetrisDisplay.endGame();
 	}
 	
