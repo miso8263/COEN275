@@ -80,6 +80,8 @@ public class GameDisplay extends JComponent{
 		ImageIcon minoIcon = new ImageIcon(new ImageIcon("Mino.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT));
 		//JLabel minoLabel = new JLabel(minoIcon);
 		
+		boolean blankGrid = true;
+		
 		for (int i = 0; i < gridData.length-2; i++) {	
 	    {
 	    	for (int j = 0; j < gridData[0].length; j++)
@@ -87,6 +89,7 @@ public class GameDisplay extends JComponent{
 	                if (gridData[i][j])
 	                {
 	                	playgrid[i][j].setIcon(minoIcon);
+	                	blankGrid = false;
 	                }  
 	                else
 	                {
@@ -95,6 +98,13 @@ public class GameDisplay extends JComponent{
 	            }
 	        }	    	
 		}
+		
+		if (blankGrid)
+		{
+			// Nobody should ever see this; it just forces the window up on the screen for smooth transition between blank/not blank grid
+			playgrid[0][0].setIcon(new ImageIcon(new ImageIcon("akbar.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT)));
+		}
+		
 		frame.setVisible(true);
 	}
 	
@@ -260,7 +270,7 @@ public class GameDisplay extends JComponent{
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				screens.show(screensContainer,"Gameplay");
-				//start game, clock should start
+				GameRunner.pauseGame(false);
 			}
 		});
 		welcomeScreen.add(startButton,BorderLayout.SOUTH);

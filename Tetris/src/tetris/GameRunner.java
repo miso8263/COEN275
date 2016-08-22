@@ -86,19 +86,22 @@ public class GameRunner{
 	 */
 	static void startGame(){
 		
+		// Set level to one
+		level = 1;
+		
 		// Initialize display
 		tetrisDisplay = new GameDisplay();
 				
 		// Create game system object
 		tetrisSystem = new GameSystem(tetrisDisplay);
 		
-		tetrisDisplay.updateScoreDisplay(tetrisSystem.getScore());
+		// Begin display with its initial blank grid
+		tetrisDisplay.updateGridDisplay(tetrisSystem.getGrid());
 		
-		// Set level to one
-		level = 1;
 		
-		//paused is false
-		PAUSED = false;
+		
+		//paused is true until we receive the start signal from the user
+		PAUSED = true;
 		
 		// Initialize Timer
 		tetrisTimer = new Timekeeper(1000, tetrisSystem);
@@ -149,8 +152,6 @@ public class GameRunner{
 		level += 1;
 		
 		// Print level up message
-		// TODO: update display message
-		System.out.println("level up!");
 		tetrisDisplay.updateLevelDisplay(level);
 		
 		// Score threshold is updated
