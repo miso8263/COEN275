@@ -434,6 +434,7 @@ public class GameSystem {
 				
 				this.score += ROW_COMPLETE_SCORE;
 				this.display.updateScoreDisplay(this.score);
+				i--; //check that row one more time
 			}
 		}
 		this.display.updateGridDisplay(overlayTetromino());
