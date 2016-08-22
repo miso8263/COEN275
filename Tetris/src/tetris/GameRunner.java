@@ -94,8 +94,8 @@ public class GameRunner{
 		
 		tetrisDisplay.updateScoreDisplay(tetrisSystem.getScore());
 		
-		// Set level to zero
-		level = 0;
+		// Set level to one
+		level = 1;
 		
 		//paused is false
 		PAUSED = false;
@@ -151,7 +151,7 @@ public class GameRunner{
 		// Print level up message
 		// TODO: update display message
 		System.out.println("level up!");
-		// TODO: update level display
+		tetrisDisplay.updateLevelDisplay(level);
 		
 		// Score threshold is updated
 		SCORE_THRESHOLD += 500;

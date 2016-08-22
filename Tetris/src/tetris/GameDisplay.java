@@ -179,8 +179,15 @@ public class GameDisplay extends JComponent{
 	 * @param score
 	 */
 	public void updateScoreDisplay(int score){
-	//	this.scoreDisplay.setName(score);
-		
+		this.scoreDisplay.setText(""+score);
+	}
+	
+	/**
+	 * Display level
+	 * @param level
+	 */
+	public void updateLevelDisplay(int level){
+		this.levelDisplay.setText(""+level);
 	}
 	
 	/**
