@@ -174,6 +174,11 @@ public class GameSystem {
 		int i;
 		int j;
 		
+		if(GameRunner.PAUSED)
+		{
+			return;
+		}
+		
 		if (this.activeTetromino == null || this.activeTetromino.getXLocation() == -111)
 		{
 			// Unreleased tetromino

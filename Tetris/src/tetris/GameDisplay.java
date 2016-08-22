@@ -296,6 +296,7 @@ public class GameDisplay extends JComponent{
 					updateSassyVader("Default");
 					pausestate = false;
 				}
+				GameRunner.pauseGame(pausestate);
 			}
 		});
 		

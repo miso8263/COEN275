@@ -25,13 +25,13 @@ import javax.swing.KeyStroke;
  */
 public class GameRunner{
 	private static int level;
-	private static boolean paused;
 	private static GameDisplay tetrisDisplay;
 	private static GameSystem tetrisSystem;
 	private static Timekeeper tetrisTimer;
 	private static Timer gameTimer;
 	
 	static int SCORE_THRESHOLD = 500;
+	static boolean PAUSED = true;
 	
 	static Action aAction = new AbstractAction(){
 		public void actionPerformed(ActionEvent e){
@@ -98,7 +98,7 @@ public class GameRunner{
 		level = 0;
 		
 		//paused is false
-		paused = false;
+		PAUSED = false;
 		
 		// Initialize Timer
 		tetrisTimer = new Timekeeper(1000, tetrisSystem);
@@ -168,12 +168,13 @@ public class GameRunner{
 		tetrisTimer = new Timekeeper(newSpeed, tetrisSystem);
 
 		gameTimer.scheduleAtFixedRate(tetrisTimer, 0, tetrisTimer.getSpeed());
+		
 	}
 	
 	/**
 	 * Stop taking input until game is unpaused
 	 */
-	static void pauseGame(){
+	static void pauseGame(boolean _paused){
 		//If game already paused,
 			//unpause
 			//Pause message is removed
@@ -182,6 +183,7 @@ public class GameRunner{
 			//game clock stops, game loop suspends
 			//Active tetromino ceases all movement, including downward 
 			//Pause message is displayed
+		PAUSED = _paused;
 
 	}
 	
