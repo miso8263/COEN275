@@ -179,8 +179,6 @@ public class GameDisplay extends JComponent{
 	 */
 	public static void updatePreview(boolean[][] previewData){
 		//BufferedImage mino = null;
-		
-		ImageIcon minoIcon = new ImageIcon(new ImageIcon("Mino.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT));
 		//JLabel minoLabel = new JLabel(minoIcon);
 		
 		for (int i = 0; i < previewData.length; i++) {	
