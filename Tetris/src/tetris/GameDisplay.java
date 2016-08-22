@@ -41,6 +41,7 @@ public class GameDisplay extends JComponent{
 	static JLabel[][] previewgrid;
 	
 	static JPanel gameoverPanel;
+	static JPanel pausePanel; 
 	
 	static ImageIcon vadericon;
 	
@@ -64,7 +65,7 @@ public class GameDisplay extends JComponent{
 	 */
 	public GameDisplay(){
 		
-		// Game board is 22 blocks high by 10 blocks wide
+		// Game board is 28 blocks high by 14 blocks wide
 		// Game board has a border
 		initialize();
 	}
@@ -78,8 +79,7 @@ public class GameDisplay extends JComponent{
 	 * 1 means block present
 	 */
 	public static void updateGridDisplay(boolean[][] gridData){
-		//BufferedImage mino = null;
-		//JLabel minoLabel = new JLabel(minoIcon);
+
 		
 		boolean blankGrid = true;
 		
@@ -178,8 +178,6 @@ public class GameDisplay extends JComponent{
 	 * to be consistent with the handling of the tetromino game board. 
 	 */
 	public static void updatePreview(boolean[][] previewData){
-		//BufferedImage mino = null;
-		//JLabel minoLabel = new JLabel(minoIcon);
 		
 		for (int i = 0; i < previewData.length; i++) {	
 		
@@ -257,7 +255,7 @@ public class GameDisplay extends JComponent{
 		BorderLayout tetrisLayout = new BorderLayout();
 		JPanel gameplayScreen = new JPanel();
 		JPanel welcomeScreen = new JPanel();	
-		final JPanel pausePanel = new JPanel();
+		pausePanel = new JPanel();
 		gameoverPanel = new JPanel();
 		JPanel gameoverScreen = new JPanel();
 		JPanel leftPanel = new JPanel(new GridLayout(3,1,0,20));
@@ -330,7 +328,6 @@ public class GameDisplay extends JComponent{
 		pauseButton.setFont(new Font("Courier New", Font.BOLD, 12));
 		pauseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//stop timer in system?
 				if(pausestate==false & lockout==false){
 					layeredContainer.moveToFront(pausePanel);
 					pausePanel.setVisible(true);
@@ -440,8 +437,6 @@ public class GameDisplay extends JComponent{
 		playagainButton.setForeground(Color.BLACK);
 		playagainButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//initialize();
-				//restart game, need to start the clock and reset data here!
 				frame.dispose();
 				GameRunner.restartGame();
 			}
@@ -500,6 +495,9 @@ public class GameDisplay extends JComponent{
         frame.setResizable(false);	
 	}
 	
+	/**
+	 * Accessor for tetris panel used by gamerunner
+	 */
 	public JPanel getPanel()
 	{
 		return tetrisPanel;
