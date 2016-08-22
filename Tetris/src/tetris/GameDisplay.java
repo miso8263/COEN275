@@ -21,7 +21,8 @@ import javax.swing.*;
  * 
  * This will be driven by the GameRunner with data retrieved from GameSystem
  * 
- * This is going to have some fields but we haven't worked that out yet
+ * Contains all components and resources necessary to display information
+ * And grab input from user, which is transmitted to the runner/system
  */
 public class GameDisplay extends JComponent{
 	//TODO: add fields, such as String flavorText, actual display, etc.
@@ -39,13 +40,15 @@ public class GameDisplay extends JComponent{
 	static JLabel[][] playgrid;
 	static JLabel[][] previewgrid;
 	
+	static JPanel gameoverPanel;
+	
 	static ImageIcon vadericon;
 	
 	JLabel scoreDisplay;
 	JLabel levelDisplay;
 	
 	boolean pausestate;
-	boolean lockout;
+	static boolean lockout;
 	
 	private java.awt.Image image;
 	
@@ -78,6 +81,8 @@ public class GameDisplay extends JComponent{
 		ImageIcon minoIcon = new ImageIcon(new ImageIcon("Mino.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT));
 		//JLabel minoLabel = new JLabel(minoIcon);
 		
+		boolean blankGrid = true;
+		
 		for (int i = 0; i < gridData.length-2; i++) {	
 	    {
 	    	for (int j = 0; j < gridData[0].length; j++)
@@ -85,6 +90,7 @@ public class GameDisplay extends JComponent{
 	                if (gridData[i][j])
 	                {
 	                	playgrid[i][j].setIcon(minoIcon);
+	                	blankGrid = false;
 	                }  
 	                else
 	                {
@@ -93,6 +99,13 @@ public class GameDisplay extends JComponent{
 	            }
 	        }	    	
 		}
+		
+		if (blankGrid)
+		{
+			// Nobody should ever see this; it just forces the window up on the screen for smooth transition between blank/not blank grid
+			playgrid[0][0].setIcon(new ImageIcon(new ImageIcon("akbar.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT)));
+		}
+		
 		frame.setVisible(true);
 	}
 	
@@ -177,10 +190,32 @@ public class GameDisplay extends JComponent{
 	 * @param score
 	 */
 	public void updateScoreDisplay(int score){
-	//	this.scoreDisplay.setName(score);
-		
+		this.scoreDisplay.setText(""+score);
 	}
 	
+	/**
+	 * Display level
+	 * @param level
+	 */
+	public void updateLevelDisplay(int level){
+		this.levelDisplay.setText(""+level);
+	}
+	
+	/**
+	 * Game is over; bring up display for end game options
+	 */
+	static void endGame()
+	{
+		lockout=true;
+		layeredContainer.moveToFront(gameoverPanel);
+		gameoverPanel.setVisible(true);
+		updateSassyVader("Game Over");
+		GameRunner.pauseGame(true);
+	}
+	
+	/**
+	 * Create containers and initial values for display components
+	 */
 	private void initialize() {
 		
 		pausestate = false;
@@ -212,7 +247,7 @@ public class GameDisplay extends JComponent{
 		JPanel gameplayScreen = new JPanel();
 		JPanel welcomeScreen = new JPanel();	
 		final JPanel pausePanel = new JPanel();
-		final JPanel gameoverPanel = new JPanel();
+		gameoverPanel = new JPanel();
 		JPanel gameoverScreen = new JPanel();
 		JPanel leftPanel = new JPanel(new GridLayout(3,1,0,20));
 		JPanel rightPanel = new JPanel();
@@ -239,7 +274,7 @@ public class GameDisplay extends JComponent{
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				screens.show(screensContainer,"Gameplay");
-				//start game, clock should start
+				GameRunner.pauseGame(false);
 			}
 		});
 		welcomeScreen.add(startButton,BorderLayout.SOUTH);
@@ -296,6 +331,7 @@ public class GameDisplay extends JComponent{
 					updateSassyVader("Default");
 					pausestate = false;
 				}
+				GameRunner.pauseGame(pausestate);
 			}
 		});
 		
@@ -305,11 +341,7 @@ public class GameDisplay extends JComponent{
 			public void actionPerformed(ActionEvent e) {
 				//Quit Game
 				if(pausestate==false & lockout==false){
-					lockout=true;
-					layeredContainer.moveToFront(gameoverPanel);
-					gameoverPanel.setVisible(true);
-					updateSassyVader("Game Over");
-					//how do we immobilize the keys?
+					endGame();
 				}
 				//otherwise do nothing
 			}
@@ -395,8 +427,10 @@ public class GameDisplay extends JComponent{
 		playagainButton.setForeground(Color.BLACK);
 		playagainButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize();
+				//initialize();
 				//restart game, need to start the clock and reset data here!
+				frame.dispose();
+				GameRunner.restartGame();
 			}
 		});
 		
@@ -405,7 +439,7 @@ public class GameDisplay extends JComponent{
 		quitgameButton.setForeground(Color.BLACK);
 		quitgameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				GameRunner.endGame();
 			}
 		});
 		

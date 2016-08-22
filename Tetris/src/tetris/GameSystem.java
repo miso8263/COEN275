@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Class for holding and managing individual game components
+ * Class for holding and managing the grid portion of the game
  * 
  * This class handles the main data & logic of the game, including
  * collision detection, sending movement & rotation instructions, 
  * deletion of rows, score calculation,
- * tetromino creation and management
+ * tetromino creation and management,
+ * and overlay of grid data for display
  * 
- * These all interact to form the "state" of the game
+ * These all interact to form the internal game board
  * 
  */
 public class GameSystem {
-	private int score;
 	private ArrayList<Tetromino> nextShapeQueue;
 	private Tetromino activeTetromino;
 	
@@ -26,8 +26,6 @@ public class GameSystem {
 	private static char[] shapeChoices = {'i', 'o', 's', 't', 'z', 'j', 'l'};
 	private static int HEIGHT = 30;
 	private static int WIDTH = 14;
-	private static int SHAPE_LAND_SCORE = 50;
-	private static int ROW_COMPLETE_SCORE = 75;
 	
 	/**
 	 * Default constructor for game system
@@ -37,9 +35,6 @@ public class GameSystem {
 	 */
 	public GameSystem(GameDisplay disp){
 		this.display = disp;
-		
-		// Set score to zero
-		this.score = 0;
 		
 		// Game board is 22 blocks high by 10 blocks wide
 		this.blockGrid = new boolean[HEIGHT][WIDTH];
@@ -58,14 +53,6 @@ public class GameSystem {
 	 */
 	public boolean[][] getGrid(){
 		return this.blockGrid;
-	}
-	
-	/**
-	 * Get score for runner use in display
-	 * @return score
-	 */
-	public int getScore(){
-		return this.score;
 	}
 	
 	//Tetromino Functionality
@@ -129,6 +116,10 @@ public class GameSystem {
 		}
 	}
 	
+	/**
+	 * Overlay next tetromino grid over 8x6 for display of shape preview
+	 * @return overlaidGrid
+	 */
 	public boolean[][] overlayPreview()
 	{
 		int i, j;
@@ -166,6 +157,8 @@ public class GameSystem {
 	 * rotation = 1 means rotate right/clockwise 90 degrees
 	 * rotation = -1 means rotate left/counter-clockwise 90 degrees
 	 * 
+	 * Detect collision and prevent movement into walls/other shapes/etc
+	 * 
 	 */
 	public void moveActiveTetromino(int x_direction, int y_direction, int rotation){
 		boolean[][] tempGrid;
@@ -173,6 +166,11 @@ public class GameSystem {
 		int y_loc;
 		int i;
 		int j;
+		
+		if(GameRunner.PAUSED)
+		{
+			return;
+		}
 		
 		if (this.activeTetromino == null || this.activeTetromino.getXLocation() == -111)
 		{
@@ -348,7 +346,7 @@ public class GameSystem {
 		// If tetromino cannot move up, game over
 		if (this.blockGrid[HEIGHT-1][x_pos] || this.blockGrid[HEIGHT-2][x_pos])
 		{
-			// TODO: game over
+			GameRunner.loseGame();
 			return;
 		}
 		
@@ -360,8 +358,8 @@ public class GameSystem {
 	}
 	
 	/** 
-	 * land and lock shape to game grid
-	 * increase score
+	 * Land and lock shape to game grid
+	 * Increase score and update display
 	 */
 	private void landShape(){
 		
@@ -390,13 +388,7 @@ public class GameSystem {
 			}
 		}
 		
-		this.score += SHAPE_LAND_SCORE;
-		this.display.updateScoreDisplay(this.score);
-		
-		if (this.score > GameRunner.SCORE_THRESHOLD)
-		{
-			GameRunner.levelUp();
-		}
+		GameRunner.scoreUp(GameRunner.SHAPE_LAND_SCORE);
 		
 		completeRows();
 		
@@ -406,7 +398,7 @@ public class GameSystem {
 	
 	/**
 	 * Check for completed rows and delete those that have been completed
-	 * increase score
+	 * Increase score and update display
 	 */
 	private void completeRows()
 	{
@@ -437,12 +429,7 @@ public class GameSystem {
 					}
 				}
 				
-				this.score += ROW_COMPLETE_SCORE;
-				this.display.updateScoreDisplay(this.score);
-				if (this.score > GameRunner.SCORE_THRESHOLD)
-				{
-					GameRunner.levelUp();
-				}
+				GameRunner.scoreUp(GameRunner.ROW_COMPLETE_SCORE);
 				
 				i--; //check that row one more time
 			}

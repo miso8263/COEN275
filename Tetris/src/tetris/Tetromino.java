@@ -6,12 +6,12 @@ package tetris;
  * 
  * Contains the components necessary for a tetromino to exist within the game
  * Minimal logic to implement selection of tetromino shape upon creation
+ * As well as rotation handling
  *
  */
 public class Tetromino {
 	
 	private boolean[][] tetrominoGrid; 
-	private char tetrominoShape; //adding this in in case we need it later since implementation is very easy
 	private boolean T = true;
 	private boolean F = false;
 	
@@ -22,12 +22,9 @@ public class Tetromino {
 	 * Default constructor for tetromino
 	 * Creates a square tetromino ('o')
 	 */
-
 	public Tetromino(){
-	
 		this.tetrominoGrid = new boolean [][] {{T, T},
 											   {T, T}};
-		this.tetrominoShape = 'o';
 	}
 	
 	/**
@@ -40,6 +37,8 @@ public class Tetromino {
 		
 		boolean [][] newTetrominoGrid = null;
 		
+		// Initial values that corner of tetromino grid could NEVER be at while in play
+		// Used by System to ensure non-released tetrominos are not moved
 		this.x_location = -111;
 		this.y_location = -111;
 		
@@ -93,13 +92,12 @@ public class Tetromino {
 		}
 		
 		this.tetrominoGrid = newTetrominoGrid;
-		this.tetrominoShape = shape;
 	}
 	
 	/**
 	 * Retriever for shape data
-	 * Used by system and display
-	 * @return shape
+	 * Used by system for collision handling and display
+	 * @return tetrominoGrid
 	 */
 	public boolean[][] getShapeGrid(){
 		return this.tetrominoGrid;
@@ -108,7 +106,7 @@ public class Tetromino {
 	/**
 	 * Getter for x location
 	 * X position is specified as:
-	 * TODO: decide how
+	 * 0 == far left
 	 * @return this.x_location
 	 */
 	public int getXLocation(){
@@ -118,17 +116,17 @@ public class Tetromino {
 	/**
 	 * Getter for y location
 	 * Y position is specified as:
-	 * TODO: decide how	
+	 * 0 == top
 	 * @return this.y_location
 	 */
 	public int getYLocation(){
-		return this.y_location; /*T: I believe this should just return the location that has already been stored
-										it is setting that location that we need to figure out how to do */
+		return this.y_location; 
 	}
+	
 	/**
 	 * Set location of tetromino object
-	 * In relation to: the game board grid?
-	 * TODO: should match setters and whatever corner of the grid, current working: say upper left corner
+	 * In relation to: the game board grid
+	 * This position is the upper left corner of the tetromino grid
 	 * @param x
 	 * @param y
 	 */
@@ -146,19 +144,15 @@ public class Tetromino {
 	 * Counter-clockwise: rotation == -1
 	 * @param rotation
 	 */
-	
 	public void rotate(int rotation){
-		// TODO: add collision detection and error handling
-		/* I thought collision detection would be handled by the system since the tetromino doesn't know about
-		 * anything outside itself? Perhaps system can check for collision every time the tetromino moves. */
 		switch (rotation) {
 			case 1: 
-				//rotate right
+				//rotate right/clockwise
 				swapRows();
 				transpose();
 				break;
 			case -1:
-				//rotate left
+				//rotate left/counter-clockwise
 				transpose();
 				swapRows();
 				break;
@@ -168,7 +162,11 @@ public class Tetromino {
 				break;
 		}
 	}
-	//should be private static void
+	
+	/**
+	 * swapRows
+	 * helper function for row-swapping portion of rotation
+	 */
 	private void swapRows(){
 		for (int i = 0, j = this.tetrominoGrid[i].length-1; i<j; i++, j--){
 			boolean [] holder =  this.tetrominoGrid[i];
@@ -176,7 +174,11 @@ public class Tetromino {
 			this.tetrominoGrid[j] = holder;
 		}
 	}
-	//should be private static void
+	
+	/**
+	 * transpose
+	 * helper function for transpose portion of rotation
+	 */
 	private void transpose(){ 
 		
 		boolean [][] holder = new boolean [this.tetrominoGrid.length][];
