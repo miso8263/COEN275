@@ -28,7 +28,10 @@ public class GameRunner{
 	private static boolean paused;
 	private static GameDisplay tetrisDisplay;
 	private static GameSystem tetrisSystem;
+	private static Timekeeper tetrisTimer;
 	private static Timer gameTimer;
+	
+	static int SCORE_THRESHOLD = 500;
 	
 	static Action aAction = new AbstractAction(){
 		public void actionPerformed(ActionEvent e){
@@ -98,7 +101,7 @@ public class GameRunner{
 		paused = false;
 		
 		// Initialize Timer
-		Timekeeper tetrisTimer = new Timekeeper(1000, tetrisSystem);
+		tetrisTimer = new Timekeeper(1000, tetrisSystem);
 		gameTimer = new Timer();
 		
 		
@@ -142,10 +145,29 @@ public class GameRunner{
 
 	
 	static void levelUp(){
+		
+		level += 1;
+		
 		// Print level up message
-		// Speed of drop is increased
+		// TODO: update display message
+		System.out.println("level up!");
+		// TODO: update level display
+		
 		// Score threshold is updated
+		SCORE_THRESHOLD += 500;
+		
+		// Calculate new speed
+		// Speed of drop is increased
+		int newSpeed = (int)Math.round(tetrisTimer.getSpeed()*.9);		
+		
+		// Purge and restart timer
+		gameTimer.cancel();
+		gameTimer.purge();
+		
+		gameTimer = new Timer();
+		tetrisTimer = new Timekeeper(newSpeed, tetrisSystem);
 
+		gameTimer.scheduleAtFixedRate(tetrisTimer, 0, tetrisTimer.getSpeed());
 	}
 	
 	/**

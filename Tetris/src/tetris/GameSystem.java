@@ -393,6 +393,11 @@ public class GameSystem {
 		this.score += SHAPE_LAND_SCORE;
 		this.display.updateScoreDisplay(this.score);
 		
+		if (this.score > GameRunner.SCORE_THRESHOLD)
+		{
+			GameRunner.levelUp();
+		}
+		
 		completeRows();
 		
 		setActiveTetromino();		
@@ -434,6 +439,11 @@ public class GameSystem {
 				
 				this.score += ROW_COMPLETE_SCORE;
 				this.display.updateScoreDisplay(this.score);
+				if (this.score > GameRunner.SCORE_THRESHOLD)
+				{
+					GameRunner.levelUp();
+				}
+				
 				i--; //check that row one more time
 			}
 		}
