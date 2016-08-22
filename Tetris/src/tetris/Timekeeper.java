@@ -1,9 +1,6 @@
 package tetris;
 
-import java.awt.event.ActionListener;
 import java.util.TimerTask;
-
-import javax.swing.Timer;
 
 /**
  * Class for managing game clock and related activities. 
@@ -12,7 +9,6 @@ import javax.swing.Timer;
  *
  */
 public class Timekeeper extends TimerTask{
-	private int time;
 	private int speed;
 	private GameSystem localSystem;
 	
@@ -24,7 +20,6 @@ public class Timekeeper extends TimerTask{
 	public Timekeeper(){
 	this.localSystem=null;
 		this.speed = 0;
-		
 	}
 	
 	/**
@@ -34,21 +29,28 @@ public class Timekeeper extends TimerTask{
 	 * Initialize timekeeper object variables
 	 * Return a timekeeper object for handling game clock
 	 */
-	public Timekeeper(int _speed, GameSystem ge){
+	public Timekeeper(int _speed, GameSystem _ge){
 		
-		this.localSystem = ge;
-		this.speed=speed;
+		this.localSystem = _ge;
+		this.speed = _speed;
 	}
+	
+	/**
+	 * run
+	 * For attaching movement to timer
+	 * Move tetromino up one space
+	 */
 	public void run(){
 		localSystem.moveActiveTetromino(0, -1, 0);
 	}
 	
 	
 	/**
+	 * getSpeed
 	 * @return speed
 	 */
 	public int getSpeed(){
-		return this.speed; //temp value
+		return this.speed;
 	}
 	
 	/**
@@ -56,6 +58,6 @@ public class Timekeeper extends TimerTask{
 	 * @param newSpeed
 	 */
 	public void setSpeed(int newSpeed){
-	this.speed= newSpeed;	
+		this.speed = newSpeed;	
 	}
 }
