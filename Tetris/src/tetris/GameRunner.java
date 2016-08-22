@@ -193,15 +193,36 @@ public class GameRunner{
 	static void loseGame(){
 		// Loser message printed
 		// call endGame
+		tetrisDisplay.endGame();
 	}
 	
 	/**
 	 * End game
 	 */
 	static void endGame(){
+		// Final scores is printed
+		// Provide option to play again, if yes Case A executes
+		// The above are done in Display
+		
 		//Game ends
-		//Final scores is printed
-		//Provide option to play again, if yes Case A executes
+		System.exit(0);
+	}
+	
+	/**
+	 * Restart game
+	 */
+	static void restartGame(){
+		// Clear old game contents
+		gameTimer.cancel();
+		gameTimer.purge();
+
+		tetrisDisplay = null;
+		tetrisSystem = null;
+		tetrisTimer = null;
+		gameTimer = null;
+		
+		// Start game
+		startGame();
 	}
 	
 	/**

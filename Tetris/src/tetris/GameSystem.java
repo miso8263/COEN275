@@ -353,7 +353,7 @@ public class GameSystem {
 		// If tetromino cannot move up, game over
 		if (this.blockGrid[HEIGHT-1][x_pos] || this.blockGrid[HEIGHT-2][x_pos])
 		{
-			// TODO: game over
+			GameRunner.loseGame();
 			return;
 		}
 		

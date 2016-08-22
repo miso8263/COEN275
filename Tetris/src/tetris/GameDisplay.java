@@ -39,13 +39,15 @@ public class GameDisplay extends JComponent{
 	static JLabel[][] playgrid;
 	static JLabel[][] previewgrid;
 	
+	static JPanel gameoverPanel;
+	
 	static ImageIcon vadericon;
 	
 	JLabel scoreDisplay;
 	JLabel levelDisplay;
 	
 	boolean pausestate;
-	boolean lockout;
+	static boolean lockout;
 	
 	private java.awt.Image image;
 	
@@ -181,6 +183,18 @@ public class GameDisplay extends JComponent{
 		
 	}
 	
+	/**
+	 * 
+	 */
+	static void endGame()
+	{
+		lockout=true;
+		layeredContainer.moveToFront(gameoverPanel);
+		gameoverPanel.setVisible(true);
+		updateSassyVader("Game Over");
+		GameRunner.pauseGame(true);
+	}
+	
 	private void initialize() {
 		
 		pausestate = false;
@@ -212,7 +226,7 @@ public class GameDisplay extends JComponent{
 		JPanel gameplayScreen = new JPanel();
 		JPanel welcomeScreen = new JPanel();	
 		final JPanel pausePanel = new JPanel();
-		final JPanel gameoverPanel = new JPanel();
+		gameoverPanel = new JPanel();
 		JPanel gameoverScreen = new JPanel();
 		JPanel leftPanel = new JPanel(new GridLayout(3,1,0,20));
 		JPanel rightPanel = new JPanel();
@@ -306,11 +320,7 @@ public class GameDisplay extends JComponent{
 			public void actionPerformed(ActionEvent e) {
 				//Quit Game
 				if(pausestate==false & lockout==false){
-					lockout=true;
-					layeredContainer.moveToFront(gameoverPanel);
-					gameoverPanel.setVisible(true);
-					updateSassyVader("Game Over");
-					//how do we immobilize the keys?
+					endGame();
 				}
 				//otherwise do nothing
 			}
@@ -396,8 +406,10 @@ public class GameDisplay extends JComponent{
 		playagainButton.setForeground(Color.BLACK);
 		playagainButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialize();
+				//initialize();
 				//restart game, need to start the clock and reset data here!
+				frame.dispose();
+				GameRunner.restartGame();
 			}
 		});
 		
@@ -406,7 +418,7 @@ public class GameDisplay extends JComponent{
 		quitgameButton.setForeground(Color.BLACK);
 		quitgameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				GameRunner.endGame();
 			}
 		});
 		
