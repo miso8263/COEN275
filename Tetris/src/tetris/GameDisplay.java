@@ -234,6 +234,8 @@ public class GameDisplay extends JComponent{
 	 */
 	static void endGame()
 	{
+		GameRunner.gameOver = true;
+		
 		try {
 			GameRunner.startMarch();
 		} catch (UnsupportedAudioFileException e) {
@@ -387,8 +389,6 @@ public class GameDisplay extends JComponent{
 			public void actionPerformed(ActionEvent e) {
 				//Quit Game
 				if(lockout==false){
-					GameRunner.killVader.cancel();
-					GameRunner.killVader.purge();
 					updateSassyVader("Quit");
 					endGame();
 					

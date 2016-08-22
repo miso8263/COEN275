@@ -49,6 +49,7 @@ public class GameRunner{
 	private static Clip imperialClip;
 	private static Clip vaderClip;
 	
+	static boolean gameOver;
 	static Timer killVader;
 	
 	private static double SPEED_MODIFIER = .8; // Deliberately fast for demo purposes; for real play do .9
@@ -120,6 +121,8 @@ public class GameRunner{
 	 * Give them the information they need to kick off game functionality
 	 */
 	static void startGame(){
+		// game is starting
+		gameOver = false;
 		
 		// Set level to one and score to zero
 		level = 1;
@@ -208,7 +211,10 @@ public class GameRunner{
 		killVader.schedule(new TimerTask(){
 			@Override
 			public void run(){
-				tetrisDisplay.updateSassyVader("");;
+				if (!gameOver)
+				{
+					tetrisDisplay.updateSassyVader("");;
+				}
 			}
 		}, 3000);
 		
