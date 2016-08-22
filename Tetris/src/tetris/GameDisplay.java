@@ -21,7 +21,8 @@ import javax.swing.*;
  * 
  * This will be driven by the GameRunner with data retrieved from GameSystem
  * 
- * This is going to have some fields but we haven't worked that out yet
+ * Contains all components and resources necessary to display information
+ * And grab input from user, which is transmitted to the runner/system
  */
 public class GameDisplay extends JComponent{
 	//TODO: add fields, such as String flavorText, actual display, etc.
@@ -201,7 +202,7 @@ public class GameDisplay extends JComponent{
 	}
 	
 	/**
-	 * 
+	 * Game is over; bring up display for end game options
 	 */
 	static void endGame()
 	{
@@ -212,6 +213,9 @@ public class GameDisplay extends JComponent{
 		GameRunner.pauseGame(true);
 	}
 	
+	/**
+	 * Create containers and initial values for display components
+	 */
 	private void initialize() {
 		
 		pausestate = false;

@@ -12,26 +12,34 @@ import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
 /**
- * Class for interacting with the user and executing gameplay instructions.
+ * Class for holding and managing individual game components.
  * 
  * Sends commands to the GameSystem for management of gameplay,
  * including sending signals received from user and "drop" timer
  * 
- * Retrieves details from GameSystem to transmit to the display
- * Also sends flavor text depending on game state to GameDisplay
+ * Retrieves and sends commands between system and display
+ * Hands off references to each class for direct use
  * 
  * Runs major start, pause, and quit functionality
+ * As well as level and score
+ * 
+ * This all interacts to form the "state" of the game
  * 
  */
 public class GameRunner{
 	private static int level;
+	private static int score;
 	private static GameDisplay tetrisDisplay;
 	private static GameSystem tetrisSystem;
 	private static Timekeeper tetrisTimer;
 	private static Timer gameTimer;
 	
 	static int SCORE_THRESHOLD = 500;
+	static int SHAPE_LAND_SCORE = 50;
+	static int ROW_COMPLETE_SCORE = 75;
 	static boolean PAUSED = true;
+	
+	// Actions to attach as keybindings for display
 	
 	static Action aAction = new AbstractAction(){
 		public void actionPerformed(ActionEvent e){
@@ -72,22 +80,17 @@ public class GameRunner{
 			tetrisSystem.moveActiveTetromino(0, -1, 0);
 		}
 	};
-	/**
-	 * Default constructor for the Runner class
-	 * 
-	 * @return instance of Runner class
-	 */
-	GameRunner(){
-		
-	}
 	
 	/**
 	 * Function to begin game 
+	 * Initialize game components
+	 * Give them the information they need to kick off game functionality
 	 */
 	static void startGame(){
 		
-		// Set level to one
+		// Set level to one and score to zero
 		level = 1;
+		score = 0;
 		
 		// Initialize display
 		tetrisDisplay = new GameDisplay();
@@ -119,19 +122,10 @@ public class GameRunner{
 	}
 	
 	/**
-	 * This will become the input listener, which passes user input to system
+	 * Attach keybindings and actions to a panel inside the game window
 	 * 
 	 */
 	static void initializeListener(){
-		//Listener: Press Spacebar
-		// Behavior: Pause Game
-		
-		// Listener: Press Esc
-		// Behavior: Pause Game
-		// Print "Quit Game"
-		// If they press Enter, Quit Game
-		
-		
 		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "aAction");
 		tetrisDisplay.getPanel().getActionMap().put("aAction", aAction);
 		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "dAction");
@@ -145,8 +139,9 @@ public class GameRunner{
 		
 	}
 	
-
-	
+	/**
+	 * Increase level and update display
+	 */
 	static void levelUp(){
 		
 		level += 1;
@@ -173,19 +168,26 @@ public class GameRunner{
 	}
 	
 	/**
+	 * Increase score by a defined number
+	 * Update display and check for level up
+	 * @param scoreIncrease
+	 */
+	static void scoreUp(int scoreIncrease)
+	{
+		score += scoreIncrease;
+		tetrisDisplay.updateScoreDisplay(score);
+		
+		if (score > SCORE_THRESHOLD)
+		{
+			levelUp();
+		}
+	}
+	
+	/**
 	 * Stop taking input until game is unpaused
 	 */
 	static void pauseGame(boolean _paused){
-		//If game already paused,
-			//unpause
-			//Pause message is removed
-			//Game clock resumes, game loop resumes
-		//Else
-			//game clock stops, game loop suspends
-			//Active tetromino ceases all movement, including downward 
-			//Pause message is displayed
 		PAUSED = _paused;
-
 	}
 	
 	/**
@@ -235,21 +237,7 @@ public class GameRunner{
 		
 		// Begin gameplay
 		tetrisSystem.setActiveTetromino();
-		
 		tetrisSystem.releaseTetromino();
-				
-		// While game is not over
-		
-			// Release Tetromino
-			// If there is no room, lose game
-			// Update preview of next shape
-			// While tetromino has not landed
-				// Wait
-			// Land tetromino
-			// Complete rows
-			// Update score
-			// If score is high enough to level up
-			// Level up
 	}
 
 }
