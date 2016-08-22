@@ -52,6 +52,8 @@ public class GameDisplay extends JComponent{
 	
 	private java.awt.Image image;
 	
+	static ImageIcon minoIcon = new ImageIcon(new ImageIcon("Mino.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT));
+	
 	public void ImagePanel(java.awt.Image image){
 		this.image = image;
 	}
@@ -77,8 +79,6 @@ public class GameDisplay extends JComponent{
 	 */
 	public static void updateGridDisplay(boolean[][] gridData){
 		//BufferedImage mino = null;
-		
-		ImageIcon minoIcon = new ImageIcon(new ImageIcon("Mino.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT));
 		//JLabel minoLabel = new JLabel(minoIcon);
 		
 		boolean blankGrid = true;
