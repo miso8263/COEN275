@@ -147,7 +147,7 @@ public class GameDisplay extends JComponent{
 	
 	/**
 	 * Update preview of next shape to come
-	 * @param next tetromino  -> I propose we change this to a boolean[][] previewData
+	 * @param boolean[][] previewData
 	 * to be consistent with the handling of the tetromino game board. 
 	 */
 	public static void updatePreview(boolean[][] previewData){
@@ -162,7 +162,11 @@ public class GameDisplay extends JComponent{
 	                if (previewData[i][j])
 	                {
 	                	previewgrid[i][j].setIcon(minoIcon);
-	                }              
+	                }
+	                else
+	                {
+	                	previewgrid[i][j].setIcon(null);
+	                }
 	        }
 	    }	    	
 		frame.setVisible(true);
@@ -447,5 +451,10 @@ public class GameDisplay extends JComponent{
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);	
+	}
+	
+	public JPanel getPanel()
+	{
+		return tetrisPanel;
 	}
 }
