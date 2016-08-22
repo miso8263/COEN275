@@ -36,7 +36,7 @@ public class GameSystem {
 	public GameSystem(GameDisplay disp){
 		this.display = disp;
 		
-		// Game board is 22 blocks high by 10 blocks wide
+		// Game board is 30 blocks high by 14 blocks wide
 		this.blockGrid = new boolean[HEIGHT][WIDTH];
 		
 		// Initialize Tetrominos
