@@ -50,7 +50,7 @@ public class GameDisplay extends JComponent{
 	JLabel scoreDisplay;
 	JLabel levelDisplay;
 	
-	boolean pausestate;
+	static boolean pausestate;
 	static boolean lockout;
 	
 	private java.awt.Image image;
@@ -234,6 +234,8 @@ public class GameDisplay extends JComponent{
 	 */
 	static void endGame()
 	{
+		GameRunner.gameOver = true;
+		
 		try {
 			GameRunner.startMarch();
 		} catch (UnsupportedAudioFileException e) {
@@ -250,6 +252,24 @@ public class GameDisplay extends JComponent{
 		layeredContainer.moveToFront(gameoverPanel);
 		gameoverPanel.setVisible(true);
 		GameRunner.pauseGame(true);
+	}
+	/**
+	 * pause game
+	 */
+	static void pause()
+	{
+		if(pausestate==false & lockout==false){
+			layeredContainer.moveToFront(pausePanel);
+			pausePanel.setVisible(true);
+			updateSassyVader("Pause");
+			pausestate = true;
+		}
+		else if (pausestate==true & lockout==false){
+			pausePanel.setVisible(false);
+			updateSassyVader("Default");
+			pausestate = false;
+		}
+		GameRunner.pauseGame(pausestate);
 	}
 	
 	/**
@@ -359,18 +379,7 @@ public class GameDisplay extends JComponent{
 		pauseButton.setFont(new Font("Courier New", Font.BOLD, 12));
 		pauseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(pausestate==false & lockout==false){
-					layeredContainer.moveToFront(pausePanel);
-					pausePanel.setVisible(true);
-					updateSassyVader("Pause");
-					pausestate = true;
-				}
-				else if (pausestate==true & lockout==false){
-					pausePanel.setVisible(false);
-					updateSassyVader("Default");
-					pausestate = false;
-				}
-				GameRunner.pauseGame(pausestate);
+				pause();
 			}
 		});
 		

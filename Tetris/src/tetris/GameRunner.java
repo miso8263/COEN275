@@ -49,6 +49,9 @@ public class GameRunner{
 	private static Clip imperialClip;
 	private static Clip vaderClip;
 	
+	static boolean gameOver;
+	static Timer killVader;
+	
 	private static double SPEED_MODIFIER = .8; // Deliberately fast for demo purposes; for real play do .9
 	
 	static int SCORE_THRESHOLD = 500;
@@ -98,12 +101,28 @@ public class GameRunner{
 		}
 	};
 	
+	static Action spaceAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// Pause Game
+			tetrisDisplay.pause();
+		}
+	};
+	
+	static Action escAction = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			// End game
+			tetrisDisplay.endGame();
+		}
+	};
+	
 	/**
 	 * Function to begin game 
 	 * Initialize game components
 	 * Give them the information they need to kick off game functionality
 	 */
 	static void startGame(){
+		// game is starting
+		gameOver = false;
 		
 		// Set level to one and score to zero
 		level = 1;
@@ -167,6 +186,14 @@ public class GameRunner{
 		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "upAction");
 		tetrisDisplay.getPanel().getActionMap().put("upAction", upAction);
 		
+		// Pause
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "spaceAction");
+		tetrisDisplay.getPanel().getActionMap().put("spaceAction", spaceAction);
+		
+		// Quit
+		tetrisDisplay.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escAction");
+		tetrisDisplay.getPanel().getActionMap().put("escAction", escAction);
+		
 	}
 	
 	/**
@@ -180,11 +207,14 @@ public class GameRunner{
 		tetrisDisplay.updateLevelDisplay(level);
 		tetrisDisplay.updateSassyVader("Level Up");
 		
-		Timer killVader = new Timer();
+		killVader = new Timer();
 		killVader.schedule(new TimerTask(){
 			@Override
 			public void run(){
-				tetrisDisplay.updateSassyVader("");;
+				if (!gameOver)
+				{
+					tetrisDisplay.updateSassyVader("");;
+				}
 			}
 		}, 3000);
 		
