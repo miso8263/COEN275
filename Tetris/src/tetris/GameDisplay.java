@@ -112,16 +112,8 @@ public class GameDisplay extends JComponent{
 	}
 	
 	/**
-	 * Update game message (pause, quit, etc)
-	 * @param text
-	 */
-	public static void updateGameMessage(String text){
-		
-	}
-	
-	/**
 	 * Update sassy vader image (pause, quit, etc)
-	 * @param Pause, Game Over, Four, Level Up
+	 * @param event Event strings include Pause, Game Over, Four, Level Up
 	 */
 	public static void updateSassyVader(String event){
 		
@@ -192,7 +184,7 @@ public class GameDisplay extends JComponent{
 	
 	/**
 	 * Update preview of next shape to come
-	 * @param boolean[][] previewData
+	 * @param previewData 8x6 boolean grid to display as shape preview
 	 * to be consistent with the handling of the tetromino game board. 
 	 */
 	public static void updatePreview(boolean[][] previewData){
@@ -215,7 +207,7 @@ public class GameDisplay extends JComponent{
 	
 	/**
 	 * Display score
-	 * @param score
+	 * @param score Current game score to display in score window
 	 */
 	public void updateScoreDisplay(int score){
 		this.scoreDisplay.setText(""+score);
@@ -223,7 +215,7 @@ public class GameDisplay extends JComponent{
 	
 	/**
 	 * Display level
-	 * @param level
+	 * @param level Current game level to display in level window
 	 */
 	public void updateLevelDisplay(int level){
 		this.levelDisplay.setText(""+level);
@@ -537,6 +529,7 @@ public class GameDisplay extends JComponent{
 	
 	/**
 	 * Accessor for tetris panel used by gamerunner
+	 * @return tetrisPanel The main JPanel for tetris to attach keybinding to
 	 */
 	public JPanel getPanel()
 	{

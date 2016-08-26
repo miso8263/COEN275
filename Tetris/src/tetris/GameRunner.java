@@ -239,7 +239,7 @@ public class GameRunner{
 	/**
 	 * Increase score by a defined number
 	 * Update display and check for level up
-	 * @param scoreIncrease
+	 * @param scoreIncrease Number to increase score by
 	 */
 	static void scoreUp(int scoreIncrease)
 	{
@@ -254,6 +254,7 @@ public class GameRunner{
 	
 	/**
 	 * Stop taking input until game is unpaused
+	 * @param _paused New T/F value for paused
 	 */
 	static void pauseGame(boolean _paused){
 		PAUSED = _paused;
@@ -343,7 +344,7 @@ public class GameRunner{
 	
 	/**
 	 * Main runner for the game
-	 * @param args
+	 * @param args Arguments to main (unused)
 	 */
 	public static void main(String[] args){
 		startGame();
