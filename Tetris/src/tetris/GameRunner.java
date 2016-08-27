@@ -104,7 +104,10 @@ public class GameRunner{
 	static Action spaceAction = new AbstractAction(){
 		public void actionPerformed(ActionEvent e){
 			// Pause Game
-			tetrisDisplay.pause();
+			if (!gameOver)
+			{
+				tetrisDisplay.pause();
+			}
 		}
 	};
 	
@@ -124,6 +127,9 @@ public class GameRunner{
 		// game is starting
 		gameOver = false;
 		
+		//paused is true until we receive the start signal from the user
+		PAUSED = true;
+		
 		// Set level to one and score to zero
 		level = 1;
 		score = 0;
@@ -135,12 +141,7 @@ public class GameRunner{
 		tetrisSystem = new GameSystem(tetrisDisplay);
 		
 		// Begin display with its initial blank grid
-		tetrisDisplay.updateGridDisplay(tetrisSystem.getGrid());
-		
-		
-		
-		//paused is true until we receive the start signal from the user
-		PAUSED = true;
+		//tetrisDisplay.updateGridDisplay(tetrisSystem.getGrid());		
 		
 		// Initialize Timer
 		tetrisTimer = new Timekeeper(1000, tetrisSystem);
@@ -150,22 +151,21 @@ public class GameRunner{
 		// Initialize Input Listener
 		initializeListener();
 		
+		// Begin ability for tetromino to move
 		tetrisSystem.setActiveTetromino();
 		
 		tetrisSystem.releaseTetromino();
 		
 		gameTimer.scheduleAtFixedRate(tetrisTimer, 0, tetrisTimer.getSpeed());
 		
+		// Start music
 		try {
 			startTheme();
 		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -257,7 +257,14 @@ public class GameRunner{
 	 * @param _paused New T/F value for paused
 	 */
 	static void pauseGame(boolean _paused){
-		PAUSED = _paused;
+		if (!gameOver)
+		{
+			PAUSED = _paused;
+		}
+		else
+		{
+			PAUSED = true;
+		}
 	}
 	
 	/**
@@ -348,10 +355,6 @@ public class GameRunner{
 	 */
 	public static void main(String[] args){
 		startGame();
-		
-		// Begin gameplay
-		tetrisSystem.setActiveTetromino();
-		tetrisSystem.releaseTetromino();
 	}
 
 }
