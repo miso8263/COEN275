@@ -114,7 +114,11 @@ public class GameRunner{
 	static Action escAction = new AbstractAction(){
 		public void actionPerformed(ActionEvent e){
 			// End game
-			tetrisDisplay.endGame();
+			if (!gameOver)
+			{
+				tetrisDisplay.updateSassyVader("Quit");
+				tetrisDisplay.endGame();
+			}
 		}
 	};
 	
