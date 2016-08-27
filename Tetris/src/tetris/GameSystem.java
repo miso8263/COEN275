@@ -166,7 +166,7 @@ public class GameSystem {
 		int i;
 		int j;
 		
-		if(GameRunner.PAUSED)
+		if(GameRunner.paused)
 		{
 			return;
 		}
