@@ -27,7 +27,6 @@ import javax.swing.*;
  * And grab input from user, which is transmitted to the runner/system
  */
 public class GameDisplay extends JComponent{
-	//TODO: add fields, such as String flavorText, actual display, etc.
 	
 	static JFrame frame;
 	
@@ -169,13 +168,10 @@ public class GameDisplay extends JComponent{
 			try {
 				GameRunner.startVader();
 			} catch (UnsupportedAudioFileException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -231,25 +227,23 @@ public class GameDisplay extends JComponent{
 		try {
 			GameRunner.startMarch();
 		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		lockout=true;
+		lockout = true;
 		layeredContainer.moveToFront(gameoverPanel);
 		gameoverPanel.setVisible(true);
 		GameRunner.pauseGame(true);
 	}
+	
 	/**
 	 * pause game
 	 */
 	static void pause()
-	{
+	{		
 		if(pausestate==false & lockout==false){
 			layeredContainer.moveToFront(pausePanel);
 			pausePanel.setVisible(true);
@@ -268,7 +262,7 @@ public class GameDisplay extends JComponent{
 	 * Create containers and initial values for display components
 	 */
 	private void initialize() {
-		
+		lockout = false;
 		pausestate = false;
     	
 		/*

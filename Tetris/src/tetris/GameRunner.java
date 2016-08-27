@@ -54,10 +54,11 @@ public class GameRunner{
 	
 	private static double SPEED_MODIFIER = .8; // Deliberately fast for demo purposes; for real play do .9
 	
-	static int SCORE_THRESHOLD = 500;
+	static int scoreThreshold = 500;
+	static boolean paused = true;
+	static boolean reset = false;
 	static int SHAPE_LAND_SCORE = 50;
 	static int ROW_COMPLETE_SCORE = 75;
-	static boolean PAUSED = true;
 	
 	// Actions to attach as keybindings for display
 	
@@ -104,14 +105,21 @@ public class GameRunner{
 	static Action spaceAction = new AbstractAction(){
 		public void actionPerformed(ActionEvent e){
 			// Pause Game
-			tetrisDisplay.pause();
+			if (!gameOver)
+			{
+				tetrisDisplay.pause();
+			}
 		}
 	};
 	
 	static Action escAction = new AbstractAction(){
 		public void actionPerformed(ActionEvent e){
 			// End game
-			tetrisDisplay.endGame();
+			if (!gameOver)
+			{
+				tetrisDisplay.updateSassyVader("Quit");
+				tetrisDisplay.endGame();
+			}
 		}
 	};
 	
@@ -124,9 +132,14 @@ public class GameRunner{
 		// game is starting
 		gameOver = false;
 		
+		//paused is true until we receive the start signal from the user
+		paused = true;
+		reset = true;
+		
 		// Set level to one and score to zero
 		level = 1;
 		score = 0;
+		scoreThreshold = 500;
 		
 		// Initialize display
 		tetrisDisplay = new GameDisplay();
@@ -135,12 +148,7 @@ public class GameRunner{
 		tetrisSystem = new GameSystem(tetrisDisplay);
 		
 		// Begin display with its initial blank grid
-		tetrisDisplay.updateGridDisplay(tetrisSystem.getGrid());
-		
-		
-		
-		//paused is true until we receive the start signal from the user
-		PAUSED = true;
+		tetrisDisplay.updateGridDisplay(tetrisSystem.getGrid());		
 		
 		// Initialize Timer
 		tetrisTimer = new Timekeeper(1000, tetrisSystem);
@@ -150,22 +158,21 @@ public class GameRunner{
 		// Initialize Input Listener
 		initializeListener();
 		
+		// Begin ability for tetromino to move
 		tetrisSystem.setActiveTetromino();
 		
 		tetrisSystem.releaseTetromino();
 		
 		gameTimer.scheduleAtFixedRate(tetrisTimer, 0, tetrisTimer.getSpeed());
 		
+		// Start music
 		try {
 			startTheme();
 		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -200,8 +207,8 @@ public class GameRunner{
 	 * Increase level and update display
 	 */
 	static void levelUp(){
-		
 		level += 1;
+		reset = false;
 		
 		// Print level up message
 		tetrisDisplay.updateLevelDisplay(level);
@@ -211,7 +218,7 @@ public class GameRunner{
 		killVader.schedule(new TimerTask(){
 			@Override
 			public void run(){
-				if (!gameOver)
+				if (!gameOver && !reset)
 				{
 					tetrisDisplay.updateSassyVader("");;
 				}
@@ -219,7 +226,7 @@ public class GameRunner{
 		}, 3000);
 		
 		// Score threshold is updated
-		SCORE_THRESHOLD += 500;
+		scoreThreshold += 500;
 		
 		// Calculate new speed
 		// Speed of drop is increased
@@ -246,7 +253,7 @@ public class GameRunner{
 		score += scoreIncrease;
 		tetrisDisplay.updateScoreDisplay(score);
 		
-		if (score > SCORE_THRESHOLD)
+		if (score > scoreThreshold)
 		{
 			levelUp();
 		}
@@ -257,7 +264,14 @@ public class GameRunner{
 	 * @param _paused New T/F value for paused
 	 */
 	static void pauseGame(boolean _paused){
-		PAUSED = _paused;
+		if (!gameOver)
+		{
+			paused = _paused;
+		}
+		else
+		{
+			paused = true;
+		}
 	}
 	
 	/**
@@ -348,10 +362,6 @@ public class GameRunner{
 	 */
 	public static void main(String[] args){
 		startGame();
-		
-		// Begin gameplay
-		tetrisSystem.setActiveTetromino();
-		tetrisSystem.releaseTetromino();
 	}
 
 }
