@@ -6,8 +6,8 @@ import java.util.Random;
 /**
  * Class for holding and managing the grid portion of the game
  * 
- * This class handles the main data & logic of the game, including
- * collision detection, sending movement & rotation instructions, 
+ * This class handles the main data and logic of the game, including
+ * collision detection, sending movement and rotation instructions, 
  * deletion of rows, score calculation,
  * tetromino creation and management,
  * and overlay of grid data for display
@@ -30,8 +30,7 @@ public class GameSystem {
 	/**
 	 * Default constructor for game system
 	 * 
-	 * @return game system object
-	 * 
+	 * @param disp Reference to the GameDisplay object
 	 */
 	public GameSystem(GameDisplay disp){
 		this.display = disp;
@@ -58,7 +57,7 @@ public class GameSystem {
 	//Tetromino Functionality
 	/**
 	 * Creates a random-shaped tetromino (of the shape options)
-	 * Returns that tetromino
+	 * @return random tetromino
 	 */
 	static Tetromino createRandomTetromino(){
 		Random rand = new Random();
@@ -148,8 +147,8 @@ public class GameSystem {
 	/**
 	 * Finds active tetromino and moves it
 	 * 
-	 * @param x_direction
-	 * @param y_direction
+	 * @param x_direction -1 or 1
+	 * @param y_direction -1 or 1
 	 * @param rotation
 	 * 
 	 * x = -1 means move left, x = 1 means move right
@@ -167,7 +166,7 @@ public class GameSystem {
 		int i;
 		int j;
 		
-		if(GameRunner.PAUSED)
+		if(GameRunner.paused)
 		{
 			return;
 		}

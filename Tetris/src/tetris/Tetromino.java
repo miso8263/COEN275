@@ -30,8 +30,7 @@ public class Tetromino {
 	/**
 	 * Constructor for tetromino
 	 * Grabs shape character and initializes shape array based on selection
-	 * @param shape
-	 * char shape may be 'i', 'o', 't', 's', 'z', j', or 'l'
+	 * @param shape Shape choice may be 'i', 'o', 't', 's', 'z', j', or 'l'
 	 */
 	public Tetromino(char shape){
 		
@@ -127,8 +126,8 @@ public class Tetromino {
 	 * Set location of tetromino object
 	 * In relation to: the game board grid
 	 * This position is the upper left corner of the tetromino grid
-	 * @param x
-	 * @param y
+	 * @param x X position of upper left corner of tetromino grid
+	 * @param y Y position of upper left corner of tetromino grid
 	 */
 	public void setLocation(int x, int y){
 		
@@ -140,9 +139,8 @@ public class Tetromino {
 	 * Rotate tetromino 90 degrees clockwise or counter clockwise.
 	 * Bigger rotations are a result of the rotate function being called
 	 * repeatedly. 
-	 * Clockwise: rotation == 1
-	 * Counter-clockwise: rotation == -1
-	 * @param rotation
+	 * 
+	 * @param rotation 1 for clockwise, -1 for counter-clockwise
 	 */
 	public void rotate(int rotation){
 		switch (rotation) {

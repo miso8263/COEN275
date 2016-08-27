@@ -23,11 +23,11 @@ public class Timekeeper extends TimerTask{
 	}
 	
 	/**
-	 * 
-	 * @param _speed
-	 * @param _ge
 	 * Initialize timekeeper object variables
 	 * Return a timekeeper object for handling game clock
+	 * 
+	 * @param _speed Initial speed (time between movements) for timekeeper
+	 * @param _ge Refeence to GameSystem for sending movement commands
 	 */
 	public Timekeeper(int _speed, GameSystem _ge){
 		
@@ -47,7 +47,7 @@ public class Timekeeper extends TimerTask{
 	
 	/**
 	 * getSpeed
-	 * @return speed
+	 * @return speed Current value of speed, used to determine next speed on level up
 	 */
 	public int getSpeed(){
 		return this.speed;
@@ -55,7 +55,7 @@ public class Timekeeper extends TimerTask{
 	
 	/**
 	 * set value of speed
-	 * @param newSpeed
+	 * @param newSpeed New speed value
 	 */
 	public void setSpeed(int newSpeed){
 		this.speed = newSpeed;	
