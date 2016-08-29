@@ -54,6 +54,7 @@ public class GameDisplay extends JComponent{
 	
 	private java.awt.Image image;
 	
+	//Image source: created by Tatiana Petkova 
 	static ImageIcon minoIcon = new ImageIcon(new ImageIcon("Mino.png").getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT));
 	
 	public void ImagePanel(java.awt.Image image){
@@ -120,6 +121,8 @@ public class GameDisplay extends JComponent{
 		boolean notVader = false;
 	
 		if (event == "Pause"){
+				//Image source: https://media2.popsugar-assets.com/files/2015/05/11/825/n/1922398/d5db8e92_shutterstock_239338216.xxxlarge_2x.jpg
+				//Caption added by Tatiana Petkova
 				vaderimage = new ImageIcon("VaderPause.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
 				vadericon.setImage(vaderimage);
 				sassyvader.revalidate();
@@ -127,6 +130,8 @@ public class GameDisplay extends JComponent{
 				sassyvader.update(sassyvader.getGraphics());
 		}
 		else if (event == "Quit"){
+				//Image source: https://media2.popsugar-assets.com/files/2015/05/11/825/n/1922398/d5db8e92_shutterstock_239338216.xxxlarge_2x.jpg
+				//Caption added by Tatiana Petkova
 				vaderimage = new ImageIcon("VaderQuit.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
 				vadericon.setImage(vaderimage);
 				sassyvader.revalidate();
@@ -134,6 +139,8 @@ public class GameDisplay extends JComponent{
 				sassyvader.update(sassyvader.getGraphics());	
 		}
 		else if (event == "Game Over"){
+				//Image source: http://www.ramascreen.com/wp-content/uploads/2014/06/Darth-Vader-e1436305399250.jpg
+				//Caption added by Tatiana Petkova
 				vaderimage = new ImageIcon("VaderDeath.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
 				vadericon.setImage(vaderimage);
 				sassyvader.revalidate();
@@ -141,6 +148,8 @@ public class GameDisplay extends JComponent{
 				sassyvader.update(sassyvader.getGraphics());	
 		}
 		else if(event == "Level Up"){
+				//Image source: http://cdn.playbuzz.com/cdn/2bec0346-34b5-4853-9a88-0ff6bb39717f/37ad5bf3-378e-40ef-99b1-fefcad14cee8.jpg
+				//Caption added by Tatiana Petkova
 				vaderimage = new ImageIcon("VaderForce.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
 				vadericon.setImage(vaderimage);
 				sassyvader.revalidate();
@@ -148,6 +157,8 @@ public class GameDisplay extends JComponent{
 				sassyvader.update(sassyvader.getGraphics());
 		}
 		else if (event == "Four"){
+				//Image source: http://cdn.playbuzz.com/cdn/2bec0346-34b5-4853-9a88-0ff6bb39717f/37ad5bf3-378e-40ef-99b1-fefcad14cee8.jpg
+				//Caption added by Tatiana Petkova
 				vaderimage = new ImageIcon("VaderFour.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
 				vadericon.setImage(vaderimage);
 				sassyvader.revalidate();
@@ -155,6 +166,7 @@ public class GameDisplay extends JComponent{
 				sassyvader.update(sassyvader.getGraphics());	
 		}
 		else{
+			//Image source: http://vignette3.wikia.nocookie.net/starwars/images/9/96/Death_star_blueprints_sw_card_trader.png/revision/latest?cb=20160620042622
 			vaderimage = new ImageIcon("DeathStarBlueprintWide.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT);
 			vadericon.setImage(vaderimage);
 			sassyvader.revalidate();
@@ -273,6 +285,7 @@ public class GameDisplay extends JComponent{
 		try{
 			/* Loads the space background image */
 			background = new JLabel(new ImageIcon(ImageIO.read(new File("StarWarsSpace.png"))));
+			//Image Source: https://pixabay.com/static/uploads/photo/2016/01/27/15/25/space-1164579_960_720.png
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -348,6 +361,7 @@ public class GameDisplay extends JComponent{
 		/*
 		 * Generates sassyvader panel
 		 */
+		//Image Source: http://vignette3.wikia.nocookie.net/starwars/images/9/96/Death_star_blueprints_sw_card_trader.png/revision/latest?cb=20160620042622
 		vadericon = new ImageIcon(new ImageIcon("DeathStarBlueprintWide.png").getImage().getScaledInstance(256,164, Image.SCALE_DEFAULT));
 		sassyvader = new JLabel ("",vadericon,JLabel.CENTER);
 		sassyvaderPanel = new JPanel();
@@ -442,6 +456,7 @@ public class GameDisplay extends JComponent{
 		 * Generates pause panel.
 		 */
 		ImageIcon pauseicon = new ImageIcon(new ImageIcon("Pause.png").getImage().getScaledInstance(300,129,Image.SCALE_DEFAULT));
+		//Image Source: http://static.comicvine.com/uploads/original/10/109662/4534084-death_star_ii2.jpg
 		JLabel pauselabel = new JLabel ("",pauseicon,JLabel.CENTER);
 		pausePanel.add(pauselabel,BorderLayout.CENTER);
 		pausePanel.setLocation(d.width/3,d.height/3+200);
@@ -452,6 +467,7 @@ public class GameDisplay extends JComponent{
 		 * Generates quit panel.
 		 */
 		ImageIcon quiticon = new ImageIcon(new ImageIcon("GameOver.png").getImage().getScaledInstance(300,129,Image.SCALE_DEFAULT));
+		//Image Source: http://static.comicvine.com/uploads/original/10/109662/4534084-death_star_ii2.jpg
 		JLabel quitlabel = new JLabel ("",quiticon,JLabel.CENTER);
 		gameoverPanel.add(quitlabel,BorderLayout.CENTER);
 		gameoverPanel.setLocation(d.width/3,d.height/3+200);
